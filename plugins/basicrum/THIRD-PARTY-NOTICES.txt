@@ -1,6 +1,6 @@
 # Third-Party Notices
 
-Basicrum-owned code is licensed under the MIT License in `LICENSE.md`. The plugin also distributes the following third-party software under its own license.
+Basicrum-owned code is licensed under the GNU General Public License version 2 or later in `LICENSE.md`. The plugin also distributes the following third-party software under its own license.
 
 ## Boomerang 1.815.60
 
@@ -13,4 +13,4 @@ Basicrum-owned code is licensed under the MIT License in `LICENSE.md`. The plugi
 - Version banner note: the banner inside the bundled file stamps the parent commit `564759ed70de7801bb64de5e2025fb6ac049ff5f` because the final source change was uncommitted when the shipped file was generated; the code content matches `ead2783a` exactly
 - Fork changes vs upstream: maintained commits that remove Long Tasks monitoring, remove the deprecated FID metric and rework Time to First Interaction, drop unused utility functions, and add the Basicrum configuration bootstrap
 
-The Boomerang copyright notice and license remain applicable to the bundled Boomerang file. Basicrum does not relicense that file under the Basicrum MIT License.
+The Boomerang copyright notice and license remain applicable to the bundled Boomerang file. Basicrum does not relicense that file under the Basicrum GNU General Public License.

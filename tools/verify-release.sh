@@ -93,6 +93,16 @@ if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq '^basicrum/vendor/.*/\.github(/|$
 	exit 1
 fi
 
+if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq '^basicrum/vendor/composer/installers(/|$)'; then
+	printf '%s\n' 'Release archive contains the Composer installer plugin.' >&2
+	exit 1
+fi
+
+if unzip -p "$ARCHIVE_PATH" basicrum/vendor/composer/autoload_classmap.php | grep -Fq 'Composer\\Installers'; then
+	printf '%s\n' 'Composer class map references the removed Composer installer plugin.' >&2
+	exit 1
+fi
+
 if ! unzip -p "$ARCHIVE_PATH" basicrum/vendor/composer/autoload_classmap.php | grep -Fq "'Basicrum\\\\WP\\\\Plugin'"; then
 	printf '%s\n' 'Composer class map does not contain the Basicrum plugin classes.' >&2
 	exit 1

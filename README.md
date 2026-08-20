@@ -70,7 +70,7 @@ The tag workflow verifies the version, runs the release tests, builds and smoke-
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Report suspected vulnerabilities privately according to [SECURITY.md](SECURITY.md), not through a public issue.
 
-Basicrum-owned code is available under the [MIT License](LICENSE). Bundled third-party software retains its upstream license; see the plugin's [third-party notices](plugins/basicrum/THIRD-PARTY-NOTICES.txt).
+Basicrum-owned code is available under the [GNU General Public License version 2 or later](LICENSE). Bundled third-party software retains its upstream license; see the plugin's [third-party notices](plugins/basicrum/THIRD-PARTY-NOTICES.txt).
 
 ## Contributors
 

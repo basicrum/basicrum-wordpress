@@ -2,11 +2,11 @@
 Contributors: basicrum, rawbird
 Tags: analytics, performance, rum, real-user-monitoring, web-vitals
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 0.0.8
-License: MIT
-License URI: https://opensource.org/licenses/MIT
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Privacy-first Real User Monitoring with consent-controlled loading, page types, and Web Vitals.
 
@@ -98,11 +98,13 @@ Beacons may include page, navigation, referrer, and resource URLs; query strings
 
 Beacons go only to the configured endpoint. The plugin does not contact basicrum.com unless the administrator configures a hosted Basicrum collector URL. Basicrum does not store visitor beacon data in the WordPress database.
 
-The collector may be hosted or self-hosted. Its operator determines retention, access, deletion, hosting, and transfer arrangements. Review the applicable service and privacy information before enabling monitoring. See [basicrum.com](https://www.basicrum.com/) for the Basicrum platform.
+The collector may be hosted or self-hosted. Its operator determines retention, access, deletion, hosting, and transfer arrangements, and publishes the terms and privacy notice that apply. Review them before enabling monitoring.
+
+For the Basicrum hosted option, see the [Basicrum platform](https://www.basicrum.com/) and the [Basicrum Privacy Notice](https://www.basicrum.com/privacy/), which covers the basicrum.com website, contact messages, and beta access requests. Ask [Basicrum](https://www.basicrum.com/contact/) for the hosted collector's service terms and privacy notice before you point the plugin at a hosted collector.
 
 == Third-party software ==
 
-Basicrum-owned code uses the MIT License. The bundled Boomerang 1.815.60 library comes from the [official Akamai Boomerang project](https://github.com/akamai/boomerang) and retains its BSD license. Basicrum's build comes from [Basicrum's Boomerang fork at commit ead2783a](https://github.com/basicrum/boomerang/tree/ead2783a33a2ce91205fe34f8fc992433faba9a2); the bundle banner identifies parent commit `564759ed70de7801bb64de5e2025fb6ac049ff5f`. License, fork-change, and reproducible-build details are in [THIRD-PARTY-NOTICES.txt](https://github.com/basicrum/basicrum-wordpress/blob/main/plugins/basicrum/THIRD-PARTY-NOTICES.txt).
+Basicrum-owned code uses the GNU General Public License version 2 or later. The bundled Boomerang 1.815.60 library comes from the [official Akamai Boomerang project](https://github.com/akamai/boomerang) and retains its BSD license. Basicrum's build comes from [Basicrum's Boomerang fork at commit ead2783a](https://github.com/basicrum/boomerang/tree/ead2783a33a2ce91205fe34f8fc992433faba9a2); the bundle banner identifies parent commit `564759ed70de7801bb64de5e2025fb6ac049ff5f`. License, fork-change, and reproducible-build details are in [THIRD-PARTY-NOTICES.txt](https://github.com/basicrum/basicrum-wordpress/blob/main/plugins/basicrum/THIRD-PARTY-NOTICES.txt).
 
 == Support ==
 
