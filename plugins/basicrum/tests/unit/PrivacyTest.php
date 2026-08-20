@@ -130,7 +130,8 @@ class PrivacyTest extends TestCase {
 		$privacy = new Privacy();
 		$privacy->add_policy_content();
 
-		$this->assertStringContainsString( 'start immediately on eligible pages', $content );
+		$this->assertStringContainsString( 'start immediately on frontend pages', $content );
+		$this->assertStringContainsString( 'Logged-in administrators are excluded unless Track Admin Users is enabled', $content );
 		$this->assertStringContainsString( 'collector configured at', $content );
 	}
 

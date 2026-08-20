@@ -6,8 +6,8 @@
  * Version:           0.0.8
  * Author:            Tsvetan Stoychev
  * Author URI:        https://www.basicrum.com/contact/
- * License:           MIT
- * License URI:       https://opensource.org/licenses/MIT
+ * License:           GPLv2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       basicrum
  * Domain Path:       /languages
  * Requires at least: 6.0

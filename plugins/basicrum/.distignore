@@ -4,6 +4,7 @@
 /.vscode
 /tests
 /vendor/bin
+/vendor/composer/installers
 /vendor/**/.github
 /.distignore
 

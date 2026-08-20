@@ -51,6 +51,23 @@ rsync -rc \
 		--classmap-authoritative
 )
 
+# composer/installers only places this package when a Composer project installs
+# it as a dependency. It has no role inside an installed plugin, so remove it
+# from the staged tree so that the shipped vendor directory, class map, and
+# Composer metadata all agree, then restore the manifest the repository ships.
+(
+	cd "$BUILD_DIR"
+	composer remove composer/installers \
+		--no-interaction \
+		--no-progress \
+		--no-plugins \
+		--no-scripts \
+		--update-no-dev \
+		--classmap-authoritative
+)
+
+cp "$PLUGIN_DIR/composer.json" "$BUILD_DIR/composer.json"
+
 rsync -rc \
 	--delete \
 	--delete-excluded \

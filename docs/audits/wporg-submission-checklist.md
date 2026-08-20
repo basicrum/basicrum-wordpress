@@ -46,12 +46,34 @@ refuters. 84 claims audited: 52 clean, 24 upheld findings, 8 overturned.
   0.0.x builds and can be misread as shipped-version history. Decide
   whether 0.0.7/0.0.6 entries stay (internal history) or fold in. (C13,
   C14)
-- [ ] Run Plugin Check against the BUILT release/basicrum.zip (not the
-  repo tree) after the fixes and keep the output for the submission. (B7)
-- [ ] Tested up to 7.0: internally defensible (blocking CI rows for wp
-  7.0 exist; format correct - verdict overturned by refuters), but
-  re-confirm on submission day that WordPress 7.0 is the current released
-  stable. (R05)
+- [x] RESOLVED 2026-08-20: Plugin Check 2.1.0 run against the built ZIP found
+  a single error - outdated_tested_upto_header (WordPress 7.1 had shipped) -
+  and zero other findings; all seven earlier findings confirmed fixed. Final
+  0/0 confirmation run against the 7.1-bumped ZIP in progress. (B7)
+- [x] RESOLVED 2026-08-20: the permanent directory slug is decided. wp.org
+  autogenerates the slug from the plugin header Plugin Name at submission and
+  cannot rename it after approval, so `Basicrum - Real User Monitoring` will be
+  offered `basicrum-real-user-monitoring`. The display name stays descriptive
+  and the shorter `basicrum` slug is requested through the documented one-time
+  correction: the FAQ states "You can update your slug once after submitting
+  it. Every submission gets an automated email with directions." Both
+  `basicrum` and `basicrum-real-user-monitoring` were unregistered on
+  2026-08-20 (wordpress.org/plugins/<slug>/ redirects to search for each).
+  `basicrum` is what the generated POT `Report-Msgid-Bugs-To` and the plugin
+  directory name already assume, so taking it keeps the support URL correct.
+  This is a user-only action on submission day; see the list below.
+- [x] RESOLVED 2026-08-20: External services now links the service privacy
+  information guideline 6 and the common-issues page ask for. The Basicrum
+  Privacy Notice covers only basicrum.com, its contact form, and beta requests,
+  so the readme says exactly that and directs webmasters to request the hosted
+  collector's own terms and privacy notice. Publishing those two documents is
+  still an open user-only action.
+- [x] RESOLVED 2026-08-20: WordPress stable moved to 7.1 and Plugin Check
+  now errors on Tested up to below current stable. Integration suite run
+  locally against a verified real WordPress 7.1 core (wp_version 7.1,
+  4 tests green), blocking rows php 8.4/wp 7.1 and php 8.5/wp 7.1 added to
+  ci.yml, readme bumped to Tested up to: 7.1, ZIP rebuilt. GitHub CI must
+  confirm the new rows green on push before tagging. (R05)
 
 ## 3. Ambiguity fixes - upheld copy issues
 
@@ -75,10 +97,9 @@ refuters. 84 claims audited: 52 clean, 24 upheld findings, 8 overturned.
   "Strictness" relaxes enforcement). Rewrite the FAQ to lead with the
   default (auto-upgrade to HTTPS) and what the toggle actually allows;
   the label rename remains open from the operator-experience audit. (C08)
-- [ ] "eligible pages" in the contributed privacy-policy text
-  (Privacy.php immediate-mode sentence) is undefined for site owners;
-  spell out: frontend pages, admins excluded unless Track Admin Users.
-  (C12)
+- [x] RESOLVED 2026-08-20: immediate-mode sentence now says "frontend
+  pages" with the administrator exclusion spelled out; PrivacyTest pins
+  both phrases. (C12)
 - [x] Define "connected" CookieYes at first use. Resolved by removing the
   ambiguous implementation detail from the customer-facing overview. (C07)
 - [x] Replace "fails closed" jargon with plain language. (C19)
@@ -92,11 +113,8 @@ refuters. 84 claims audited: 52 clean, 24 upheld findings, 8 overturned.
 - [x] Screenshots: four current WordPress 7.0.2 settings captures use the exact
   Visitor Consent and Consent Tool Connection labels, privacy-safe example
   values, and matching numbered captions in `readme.txt`. (C24)
-- [ ] Spot-check the two basicrum.com URLs (home, /contact/) resolve;
-  reviewers click them. (R45)
-- [ ] CookieYes "modern ... runtime" - one refuter pair split on this;
-  consider "CookieYes 3.x" with a one-line legacy note for precision.
-  (C06)
+- [x] RESOLVED 2026-08-20: both URLs return HTTP 200. (R45)
+- [x] RESOLVED: readme now says "CookieYes 3.x". (C06)
 
 ## 5. Verified clean (highlights)
 
@@ -105,9 +123,13 @@ refuters. 84 claims audited: 52 clean, 24 upheld findings, 8 overturned.
 - [x] Short description 95 chars (under 150), byte-identical to the
   header Description; privacy-first claim backed by defaults. (R09, C01
   overturned)
-- [x] MIT license declared consistently (readme, header, LICENSE.md,
-  composer.json); GPL-compatible; Boomerang BSD is GPL-compatible;
-  THIRD-PARTY-NOTICES.txt scopes correctly. (R08, B1)
+- [x] SUPERSEDED 2026-08-20: relicensed from MIT to GPLv2-or-later so the
+  listing matches the license guideline 1 recommends. GPLv2 text now ships in
+  LICENSE and plugins/basicrum/LICENSE.md; header, readme, composer.json
+  (`GPL-2.0-or-later`), THIRD-PARTY-NOTICES.txt, root README, and the
+  regenerated POT all agree. Boomerang stays BSD and GPL-compatible, and
+  THIRD-PARTY-NOTICES.txt still scopes it out of the Basicrum license.
+  Original finding: MIT declared consistently and GPL-compatible. (R08, B1)
 - [x] All five tags valid and implemented; Requires at least 6.0 and
   Requires PHP 7.4 match headers, composer, and CI matrix. (R03, R04, R06)
 - [x] Feature claims verified against code: page-type values verbatim in
@@ -125,5 +147,17 @@ refuters. 84 claims audited: 52 clean, 24 upheld findings, 8 overturned.
 ## User-only actions before submission day
 
 1. Register/confirm the wordpress.org username matching Contributors.
-2. Re-confirm WordPress 7.0 is the current released stable.
+2. Re-confirm WordPress 7.1 is the current released stable.
 3. Verify basicrum.com pages linked from the listing are live.
+4. Publish the hosted-service Terms of Service and a privacy notice that covers
+   the hosted collector, then link both from the readme External services
+   section. See docs/privacy-policy-preparation-checklist.md steps 14 and 15.
+5. Confirm the two outside code contributors are content with the GPLv2-or-later
+   relicense. MIT permits the sublicense, so this is a courtesy record, not a
+   blocker.
+6. On the submission email, use the one-time slug update to change
+   `basicrum-real-user-monitoring` to `basicrum` before approval. The slug is
+   permanent afterwards, and it also sets the SVN path, the installed folder
+   name, and the support URL the POT already points at. Keep the display name
+   `Basicrum - Real User Monitoring`; wp.org treats display name and slug
+   separately, and the display name stays editable after approval.

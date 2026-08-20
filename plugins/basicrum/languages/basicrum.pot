@@ -1,5 +1,5 @@
 # Copyright (C) 2026 Tsvetan Stoychev
-# This file is distributed under the MIT.
+# This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
 "Project-Id-Version: Basicrum - Real User Monitoring 0.0.8\n"
@@ -79,7 +79,7 @@ msgid "Monitoring is configured to follow the site's consent tool on every page.
 msgstr ""
 
 #: src/Admin/Privacy.php:71
-msgid "Monitoring is configured to start immediately on eligible pages without waiting for a consent signal."
+msgid "Monitoring is configured to start immediately on frontend pages, without waiting for a consent signal. Logged-in administrators are excluded unless Track Admin Users is enabled."
 msgstr ""
 
 #: src/Admin/Settings/Page.php:115
