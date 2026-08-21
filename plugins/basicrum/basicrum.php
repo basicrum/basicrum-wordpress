@@ -3,7 +3,7 @@
  * Plugin Name:       Basicrum - Real User Monitoring
  * Plugin URI:        https://www.basicrum.com/
  * Description:       Privacy-first Real User Monitoring with consent-controlled loading, page types, and Web Vitals.
- * Version:           0.0.8
+ * Version:           0.0.9
  * Author:            Tsvetan Stoychev
  * Author URI:        https://www.basicrum.com/contact/
  * License:           GPLv2 or later
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants.
-define( 'BASICRUM_VERSION', '0.0.8' );
+define( 'BASICRUM_VERSION', '0.0.9' );
 define( 'BASICRUM_PLUGIN_FILE', __FILE__ );
 define( 'BASICRUM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 

@@ -19,9 +19,9 @@ namespace, PSR-4 Composer autoloading, PHP 7.4+, and WordPress 6.0+.
 - Settings use the `basicrum_settings` option. Keep defaults, UI, and
   sanitization in sync in `Helpers`, `Admin\Settings\Page`, and
   `Admin\Settings\Validate`.
-- Version `0.0.8` is the first public release and has no upgrade migrations.
-  After it is published, use version-gated, idempotent migrations only when a
-  stored schema change requires one.
+- Version `0.0.8` is the first public release. Version `0.0.9` is current;
+  neither release requires an upgrade migration. Use version-gated, idempotent
+  migrations only when a future stored schema change requires one.
 
 ## Project Skills
 

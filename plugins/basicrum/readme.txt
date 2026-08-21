@@ -4,7 +4,7 @@ Tags: analytics, performance, rum, real-user-monitoring, web-vitals
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.0.8
+Stable tag: 0.0.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,9 @@ Basicrum-owned code uses the GNU General Public License version 2 or later. The 
 Use the Support tab on WordPress.org, open a [GitHub issue](https://github.com/basicrum/basicrum-wordpress/issues), or contact Basicrum through [basicrum.com](https://www.basicrum.com/contact/).
 
 == Changelog ==
+
+= 0.0.9 =
+* Updated development and test dependencies, aligned licensing metadata for WordPress.org submission, and synchronized Playwright test images.
 
 = 0.0.8 =
 * First public release with consent-controlled monitoring, WordPress and WooCommerce page types, query-string redaction, privacy-policy guidance, and caching-plugin exclusions.
