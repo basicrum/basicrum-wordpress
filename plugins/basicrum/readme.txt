@@ -1,4 +1,4 @@
-=== Basicrum - Real User Monitoring ===
+=== Basicrum ===
 Contributors: basicrum, rawbird
 Tags: analytics, performance, rum, real-user-monitoring, web-vitals
 Requires at least: 6.0

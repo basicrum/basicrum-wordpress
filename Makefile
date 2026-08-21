@@ -31,7 +31,7 @@ help:
 	@echo "  analyse            Run PHPStan static analysis"
 	@echo "  composer-validate  Validate Composer metadata and lock file"
 	@echo "  composer-audit     Audit locked Composer dependencies"
-	@echo "  conventions        Enforce ASCII hyphens and version consistency"
+	@echo "  conventions        Enforce repository identity, text, and version rules"
 	@echo "  translations       Update the POT translation template"
 	@echo "  js-install         Install locked JavaScript test dependencies"
 	@echo "  js-test            Run loader behavior tests in Chromium"
@@ -91,6 +91,7 @@ composer-audit:
 
 conventions:
 	sh tools/verify-ascii-hyphens.sh
+	sh tools/verify-plugin-identity.sh
 	sh tools/verify-version-consistency.sh
 	sh tools/verify-boomerang-provenance.sh
 

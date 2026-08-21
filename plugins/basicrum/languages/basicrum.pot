@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Basicrum - Real User Monitoring 0.0.9\n"
+"Project-Id-Version: Basicrum 0.0.9\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/basicrum\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: basicrum.php
-#: src/Admin/Privacy.php:78
-msgid "Basicrum - Real User Monitoring"
+#: src/Admin/Settings/Page.php:116
+msgid "Basicrum"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -82,13 +82,13 @@ msgstr ""
 msgid "Monitoring is configured to start immediately on frontend pages, without waiting for a consent signal. Logged-in administrators are excluded unless Track Admin Users is enabled."
 msgstr ""
 
+#: src/Admin/Privacy.php:78
+msgid "Basicrum - Real User Monitoring"
+msgstr ""
+
 #: src/Admin/Settings/Page.php:115
 #: src/Admin/Settings/Page.php:574
 msgid "Basicrum Settings"
-msgstr ""
-
-#: src/Admin/Settings/Page.php:116
-msgid "Basicrum"
 msgstr ""
 
 #: src/Admin/Settings/Page.php:182

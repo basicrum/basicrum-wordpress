@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Basicrum - Real User Monitoring
+ * Plugin Name:       Basicrum
  * Plugin URI:        https://www.basicrum.com/
  * Description:       Privacy-first Real User Monitoring with consent-controlled loading, page types, and Web Vitals.
  * Version:           0.0.9

@@ -46,22 +46,21 @@ refuters. 84 claims audited: 52 clean, 24 upheld findings, 8 overturned.
   0.0.x builds and can be misread as shipped-version history. Decide
   whether 0.0.7/0.0.6 entries stay (internal history) or fold in. (C13,
   C14)
-- [x] RESOLVED 2026-08-20: Plugin Check 2.1.0 run against the built ZIP found
-  a single error - outdated_tested_upto_header (WordPress 7.1 had shipped) -
-  and zero other findings; all seven earlier findings confirmed fixed. Final
-  0/0 confirmation run against the 7.1-bumped ZIP in progress. (B7)
-- [x] RESOLVED 2026-08-20: the permanent directory slug is decided. wp.org
-  autogenerates the slug from the plugin header Plugin Name at submission and
-  cannot rename it after approval, so `Basicrum - Real User Monitoring` will be
-  offered `basicrum-real-user-monitoring`. The display name stays descriptive
-  and the shorter `basicrum` slug is requested through the documented one-time
-  correction: the FAQ states "You can update your slug once after submitting
-  it. Every submission gets an automated email with directions." Both
-  `basicrum` and `basicrum-real-user-monitoring` were unregistered on
-  2026-08-20 (wordpress.org/plugins/<slug>/ redirects to search for each).
-  `basicrum` is what the generated POT `Report-Msgid-Bugs-To` and the plugin
-  directory name already assume, so taking it keeps the support URL correct.
-  This is a user-only action on submission day; see the list below.
+- [x] RESOLVED 2026-08-21: Plugin Check 2.1.0 initially found only
+  `outdated_tested_upto_header` when run locally with `--slug=basicrum`, but
+  that override concealed a submission-time identity mismatch. The official
+  upload checker correctly derived `basicrum-real-user-monitoring` from the old
+  `Plugin Name` and reported 166 text-domain errors. The header and readme title
+  now use `Basicrum`, which naturally generates the intended `basicrum` slug;
+  `make conventions` guards the header, readme title, directory, and text domain
+  relationship. Both the default and all-severity Plugin Check scans report no
+  issues for the rebuilt ZIP without a slug override (SHA-256
+  `28b263fee90e1715231ba02d9ab7d65d88e022897638d909dfbec7002fba36fc`).
+  (B7)
+- [x] RESOLVED 2026-08-21: the submission name now generates the intended
+  permanent `basicrum` slug directly. This avoids depending on a post-submission
+  slug correction and keeps the install directory, text domain, translation
+  catalog, support URL, and future WordPress.org URL aligned.
 - [x] RESOLVED 2026-08-20: External services now links the service privacy
   information guideline 6 and the common-issues page ask for. The Basicrum
   Privacy Notice covers only basicrum.com, its contact form, and beta requests,
@@ -155,9 +154,3 @@ refuters. 84 claims audited: 52 clean, 24 upheld findings, 8 overturned.
 5. Confirm the two outside code contributors are content with the GPLv2-or-later
    relicense. MIT permits the sublicense, so this is a courtesy record, not a
    blocker.
-6. On the submission email, use the one-time slug update to change
-   `basicrum-real-user-monitoring` to `basicrum` before approval. The slug is
-   permanent afterwards, and it also sets the SVN path, the installed folder
-   name, and the support URL the POT already points at. Keep the display name
-   `Basicrum - Real User Monitoring`; wp.org treats display name and slug
-   separately, and the display name stays editable after approval.

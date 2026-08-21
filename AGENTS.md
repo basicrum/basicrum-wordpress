@@ -56,6 +56,9 @@ in the matching skill.
   documentation, or user-facing text.
 - Keep the plugin header Version, `BASICRUM_VERSION`, `Stable tag`, and top
   changelog version identical. Release tags use the `v<version>` form.
+- Keep the plugin header name, readme title, install directory, and text domain
+  aligned so the header name generates the intended `basicrum` WordPress.org
+  slug. `make conventions` enforces this before submission and release.
 - Prefix hooks with `basicrum_`; use `Assets` handle constants rather than
   hard-coded script handles.
 - Boomerang lives in `assets/js/boomr/`; standard and consent loaders live in
