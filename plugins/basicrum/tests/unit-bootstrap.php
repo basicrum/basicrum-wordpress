@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'BASICRUM_VERSION' ) ) {
-	define( 'BASICRUM_VERSION', '0.0.8' );
+	define( 'BASICRUM_VERSION', '0.0.9' );
 }
 
 if ( ! defined( 'BASICRUM_PLUGIN_FILE' ) ) {
