@@ -46,10 +46,15 @@ refuters. 84 claims audited: 52 clean, 24 upheld findings, 8 overturned.
   0.0.x builds and can be misread as shipped-version history. Decide
   whether 0.0.7/0.0.6 entries stay (internal history) or fold in. (C13,
   C14)
-- [x] RESOLVED 2026-08-20: Plugin Check 2.1.0 run against the built ZIP found
-  a single error - outdated_tested_upto_header (WordPress 7.1 had shipped) -
-  and zero other findings; all seven earlier findings confirmed fixed. Final
-  0/0 confirmation run against the 7.1-bumped ZIP in progress. (B7)
+- [x] RESOLVED 2026-08-21: Plugin Check 2.1.0 completed against the exact
+  `v0.0.9` ZIP built from tagged commit
+  `f689a3616e897c07a6dd60c51b4985bebeef2988` (SHA-256
+  `7321a346e3e9e8cc0b4c8cd749a8fa8f209614281da5133cdfcd704f98b42197`).
+  WP-CLI ran all stable checks in new-submission mode with slug `basicrum`, no
+  ignored codes, and Plugin Check's `cli.php` loaded so runtime checks were
+  included. Strict and raw-result runs completed successfully with no result
+  rows. The earlier `outdated_tested_upto_header` finding was resolved by the
+  WordPress 7.1 compatibility update. (B7)
 - [x] RESOLVED 2026-08-20: the permanent directory slug is decided. wp.org
   autogenerates the slug from the plugin header Plugin Name at submission and
   cannot rename it after approval, so `Basicrum - Real User Monitoring` will be
