@@ -28,7 +28,9 @@ $basicrum_autoloader = BASICRUM_PLUGIN_DIR . 'vendor/autoload.php';
 
 if ( ! is_readable( $basicrum_autoloader ) ) {
 	$basicrum_missing_autoloader_notice = static function () {
-		if ( ! current_user_can( 'activate_plugins' ) ) {
+		global $pagenow;
+
+		if ( 'plugins.php' !== $pagenow || ! current_user_can( 'activate_plugins' ) ) {
 			return;
 		}
 

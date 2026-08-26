@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class BootstrapTest extends TestCase {
 
 	/**
-	 * Ensure a missing Composer autoloader produces an administrator notice.
+	 * Ensure a missing Composer autoloader warns only on plugin screens.
 	 *
 	 * The bootstrap is executed in a separate PHP process because it defines
 	 * plugin constants and returns early when the autoloader is unavailable.
@@ -33,6 +33,7 @@ class BootstrapTest extends TestCase {
 		$runner = <<<'PHP'
 define( 'ABSPATH', sys_get_temp_dir() . '/' );
 $GLOBALS['basicrum_test_actions'] = array();
+$GLOBALS['pagenow'] = 'index.php';
 
 function plugin_dir_path( $file ) {
 	return dirname( $file ) . DIRECTORY_SEPARATOR;
@@ -57,12 +58,28 @@ if ( ! isset( $GLOBALS['basicrum_test_actions']['admin_notices'] ) ) {
 	exit( 1 );
 }
 
+if ( ! isset( $GLOBALS['basicrum_test_actions']['network_admin_notices'] ) ) {
+	fwrite( STDERR, "Missing network admin notice callback.\n" );
+	exit( 1 );
+}
+
 ob_start();
 call_user_func( $GLOBALS['basicrum_test_actions']['admin_notices'] );
-$notice = ob_get_clean();
+$dashboard_notice = ob_get_clean();
 
-if ( false === strpos( $notice, 'Composer dependencies are missing' ) ) {
-	fwrite( STDERR, "Unexpected admin notice: $notice\n" );
+if ( '' !== $dashboard_notice ) {
+	fwrite( STDERR, "Unexpected dashboard notice: $dashboard_notice\n" );
+	exit( 1 );
+}
+
+$GLOBALS['pagenow'] = 'plugins.php';
+
+ob_start();
+call_user_func( $GLOBALS['basicrum_test_actions']['admin_notices'] );
+$plugins_notice = ob_get_clean();
+
+if ( false === strpos( $plugins_notice, 'Composer dependencies are missing' ) ) {
+	fwrite( STDERR, "Unexpected Plugins-screen notice: $plugins_notice\n" );
 	exit( 1 );
 }
 PHP;

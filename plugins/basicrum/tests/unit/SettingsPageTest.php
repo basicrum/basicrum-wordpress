@@ -51,22 +51,10 @@ class SettingsPageTest extends TestCase {
 	 * Test the settings page renders the packaged Basicrum logo.
 	 */
 	public function test_settings_page_renders_brand_logo() {
-		Functions\when( 'plugins_url' )->alias(
-			function( $path ) {
-				return 'https://example.com/wp-content/plugins/basicrum/' . $path;
-			}
-		);
-		Functions\expect( 'current_user_can' )->once()->with( 'manage_options' )->andReturn( true );
-		Functions\when( 'get_admin_page_title' )->justReturn( 'Basicrum Settings' );
-		Functions\when( 'settings_fields' )->justReturn();
-		Functions\when( 'do_settings_sections' )->justReturn();
-		Functions\when( 'submit_button' )->justReturn();
+		$this->set_settings( array( 'enabled' => '0' ) );
+		Functions\expect( 'settings_errors' )->once();
 
-		$page = new Page();
-
-		ob_start();
-		$page->render_settings_page();
-		$html = ob_get_clean();
+		$html = $this->render_settings_page_html();
 
 		$this->assertStringContainsString( 'class="basicrum-settings-header"', $html );
 		$this->assertStringContainsString( 'class="basicrum-settings-logo"', $html );
@@ -74,6 +62,26 @@ class SettingsPageTest extends TestCase {
 		$this->assertStringContainsString( 'alt=""', $html );
 		$this->assertStringContainsString( 'width="48"', $html );
 		$this->assertStringContainsString( 'height="48"', $html );
+	}
+
+	/**
+	 * Test settings notices are not registered across the administration area.
+	 */
+	public function test_settings_notices_are_not_hooked_globally() {
+		$hooks = array();
+
+		Functions\when( 'add_action' )->alias(
+			function( $hook_name ) use ( &$hooks ) {
+				$hooks[] = $hook_name;
+			}
+		);
+
+		new Page();
+
+		$this->assertContains( 'admin_menu', $hooks );
+		$this->assertContains( 'admin_init', $hooks );
+		$this->assertContains( 'admin_enqueue_scripts', $hooks );
+		$this->assertNotContains( 'admin_notices', $hooks );
 	}
 
 	/**
@@ -890,7 +898,7 @@ class SettingsPageTest extends TestCase {
 	 * @param string $brum_site_id     Brum Site ID setting.
 	 * @param string $expected_message Expected warning fragment.
 	 */
-	public function test_admin_notice_when_required_settings_are_missing( $beacon_url, $brum_site_id, $expected_message ) {
+	public function test_settings_notice_when_required_settings_are_missing( $beacon_url, $brum_site_id, $expected_message ) {
 		$this->set_settings(
 			array(
 				'enabled'      => '1',
@@ -899,7 +907,6 @@ class SettingsPageTest extends TestCase {
 			)
 		);
 
-		Functions\expect( 'current_user_can' )->once()->with( 'manage_options' )->andReturn( true );
 		Functions\expect( 'add_settings_error' )
 			->once()
 			->with(
@@ -915,8 +922,7 @@ class SettingsPageTest extends TestCase {
 			);
 		Functions\expect( 'settings_errors' )->once();
 
-		$page = new Page();
-		$page->admin_notices();
+		$this->render_settings_page_html();
 	}
 
 	/**
@@ -944,12 +950,10 @@ class SettingsPageTest extends TestCase {
 			)
 		);
 
-		Functions\expect( 'current_user_can' )->once()->with( 'manage_options' )->andReturn( true );
 		Functions\expect( 'add_settings_error' )->never();
 		Functions\expect( 'settings_errors' )->once();
 
-		$page = new Page();
-		$page->admin_notices();
+		$this->render_settings_page_html();
 	}
 
 	/**
@@ -964,11 +968,33 @@ class SettingsPageTest extends TestCase {
 			)
 		);
 
-		Functions\expect( 'current_user_can' )->once()->with( 'manage_options' )->andReturn( true );
 		Functions\expect( 'add_settings_error' )->never();
 		Functions\expect( 'settings_errors' )->once();
 
+		$this->render_settings_page_html();
+	}
+
+	/**
+	 * Render the Basicrum settings page with its WordPress dependencies stubbed.
+	 *
+	 * @return string Rendered settings page HTML.
+	 */
+	private function render_settings_page_html() {
+		Functions\when( 'plugins_url' )->alias(
+			function( $path ) {
+				return 'https://example.com/wp-content/plugins/basicrum/' . $path;
+			}
+		);
+		Functions\expect( 'current_user_can' )->once()->with( 'manage_options' )->andReturn( true );
+		Functions\when( 'get_admin_page_title' )->justReturn( 'Basicrum Settings' );
+		Functions\when( 'settings_fields' )->justReturn();
+		Functions\when( 'do_settings_sections' )->justReturn();
+		Functions\when( 'submit_button' )->justReturn();
+
 		$page = new Page();
-		$page->admin_notices();
+
+		ob_start();
+		$page->render_settings_page();
+		return ob_get_clean();
 	}
 }

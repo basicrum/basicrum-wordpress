@@ -53,7 +53,6 @@ class Page {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_menu_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
 	}
 
@@ -531,6 +530,7 @@ class Page {
 				/>
 				<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			</div>
+			<?php $this->render_settings_notices(); ?>
 			<form action="options.php" method="post">
 				<?php
 				settings_fields( self::GROUP );
@@ -543,15 +543,15 @@ class Page {
 	}
 
 	/**
-	 * Display admin notices for settings errors and incomplete configuration.
+	 * Display settings errors and incomplete-configuration guidance.
+	 *
+	 * This is called only while rendering the Basicrum settings page so plugin
+	 * notices do not appear throughout the WordPress administration area.
 	 *
 	 * @return void
 	 */
-	public function admin_notices() {
-		if ( current_user_can( 'manage_options' ) ) {
-			$this->add_required_settings_notice();
-		}
-
+	private function render_settings_notices() {
+		$this->add_required_settings_notice();
 		settings_errors();
 	}
 
