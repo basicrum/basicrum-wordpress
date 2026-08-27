@@ -6,7 +6,8 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 REPOSITORY_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 PLUGIN_DIR=${1:-"$REPOSITORY_ROOT/plugins/basicrum"}
 RELEASE_DIR=${2:-"$REPOSITORY_ROOT/release"}
-ARCHIVE_NAME=basicrum.zip
+PLUGIN_SLUG=basicrum-real-user-monitoring
+ARCHIVE_NAME="${PLUGIN_SLUG}.zip"
 ARCHIVE_PATH="$RELEASE_DIR/$ARCHIVE_NAME"
 CHECKSUM_PATH="$ARCHIVE_PATH.sha256"
 
@@ -34,7 +35,7 @@ trap cleanup EXIT HUP INT TERM
 BUILD_DIR="$STAGING_DIR/build"
 PACKAGE_DIR="$STAGING_DIR/package"
 
-mkdir -p "$BUILD_DIR" "$PACKAGE_DIR/basicrum"
+mkdir -p "$BUILD_DIR" "$PACKAGE_DIR/$PLUGIN_SLUG"
 rsync -rc \
 	--delete \
 	--exclude='/vendor/' \
@@ -73,12 +74,12 @@ rsync -rc \
 	--delete-excluded \
 	--exclude-from="$PLUGIN_DIR/.distignore" \
 	"$BUILD_DIR/" \
-	"$PACKAGE_DIR/basicrum/"
+	"$PACKAGE_DIR/$PLUGIN_SLUG/"
 
 rm -f "$ARCHIVE_PATH" "$CHECKSUM_PATH"
 (
 	cd "$PACKAGE_DIR"
-	zip -qr "$ARCHIVE_PATH" basicrum
+	zip -qr "$ARCHIVE_PATH" "$PLUGIN_SLUG"
 )
 
 if command -v sha256sum >/dev/null 2>&1; then

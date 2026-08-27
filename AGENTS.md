@@ -50,7 +50,8 @@ in the matching skill.
 
 ## Conventions
 
-- Follow WordPress-Core/WPCS. The text domain is `basicrum`.
+- Follow WordPress-Core/WPCS. The WordPress.org slug and text domain are
+  `basicrum-real-user-monitoring`.
 - Guard PHP files with `ABSPATH`; escape output and sanitize all input.
 - Use ASCII hyphens (`-`); do not use typographic dashes in source, comments,
   documentation, or user-facing text.

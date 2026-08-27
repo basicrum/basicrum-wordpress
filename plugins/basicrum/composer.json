@@ -32,6 +32,9 @@
             "Basicrum\\WP\\Tests\\": "tests/"
         }
     },
+    "extra": {
+        "installer-name": "basicrum-real-user-monitoring"
+    },
     "scripts": {
         "analyse": "phpstan analyse --configuration=phpstan.neon.dist --no-progress --memory-limit=1G",
         "lint": "phpcs --standard=phpcs.ruleset.xml",

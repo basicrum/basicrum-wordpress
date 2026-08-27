@@ -148,7 +148,7 @@ Acceptance criteria:
 - [ ] Record the minifier and its version in a lock file.
 - [ ] Make CI regenerate the loaders and fail when the committed output differs.
 - [ ] Document the source and version of the bundled Boomerang asset.
-- [x] Add a repeatable command for generating `languages/basicrum.pot`.
+- [x] Add a repeatable command for generating `languages/basicrum-real-user-monitoring.pot`.
 - [x] Keep locale-specific PO and MO files out of the repository and release ZIP.
 - [x] Keep POT generation as a local maintenance command; the standalone
   translation CI job was removed by product decision.
@@ -164,7 +164,10 @@ Acceptance criteria:
   tracked source, comments, documentation, and user-facing text.
 - [x] Add a version consistency check covering the plugin header,
   `BASICRUM_VERSION`, `Stable tag`, changelog, and release tag.
-- [x] Run both checks in pull requests and pushes to the main branch.
+- [x] Add a WordPress.org slug and text-domain consistency check covering the
+  plugin header, source literals, WPCS configuration, POT filename, and release
+  package identity.
+- [x] Run all convention checks in pull requests and pushes to the main branch.
 - [x] Document the checks in `AGENTS.md` and the contributor documentation.
 
 Acceptance criteria:

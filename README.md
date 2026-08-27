@@ -2,7 +2,7 @@
 
 Basicrum is a privacy-first Real User Monitoring integration for WordPress. It loads the bundled Boomerang library, tags WordPress and WooCommerce page types, and sends performance beacons to a configured hosted or self-hosted Basicrum collector.
 
-The installable plugin lives in [`plugins/basicrum/`](plugins/basicrum/). Build release artifacts through the repository tooling instead of zipping the source directory directly.
+The plugin source lives in [`plugins/basicrum/`](plugins/basicrum/). Release tooling packages it under the assigned WordPress.org directory slug `basicrum-real-user-monitoring`; do not zip the source directory directly.
 
 ## Privacy
 
@@ -18,7 +18,7 @@ The complete webmaster-facing behavior and consent instructions live in the [Wor
 
 | Path | Purpose |
 | --- | --- |
-| [`plugins/basicrum/`](plugins/basicrum/) | Installable plugin source |
+| [`plugins/basicrum/`](plugins/basicrum/) | Plugin source packaged under the WordPress.org slug |
 | [`tools/`](tools/) | Setup, test, and release scripts |
 | [`docker/`](docker/) | Local WordPress and WooCommerce environments |
 | [`tests/javascript/`](tests/javascript/) | Browser tests for loaders, consent adapters, and settings |
@@ -53,7 +53,7 @@ See [AGENTS.md](AGENTS.md) for repository invariants, the complete check suite, 
 
 ## Releases
 
-`make package` creates `release/basicrum.zip` and its SHA-256 checksum from a temporary production Composer install. `make package-smoke` installs that ZIP into clean WordPress and checks activation, the administration page, frontend loading, and PHP logs.
+`make package` creates `release/basicrum-real-user-monitoring.zip` and its SHA-256 checksum from a temporary production Composer install. `make package-smoke` installs that ZIP into clean WordPress and checks activation, the administration page, frontend loading, and PHP logs.
 
 The plugin header version, `BASICRUM_VERSION`, WordPress `Stable tag`, top changelog version, and `v<version>` release tag must match.
 
@@ -64,7 +64,7 @@ git tag -a vX.Y.Z -m "Basicrum vX.Y.Z"
 git push origin vX.Y.Z
 ```
 
-The tag workflow verifies the version, runs the release tests, builds and smoke-tests the installable ZIP, and only then creates the GitHub Release with `basicrum.zip` and `basicrum.zip.sha256`. Do not create the GitHub Release or upload the ZIP manually.
+The tag workflow verifies the version, runs the release tests, builds and smoke-tests the installable ZIP, and only then creates the GitHub Release with `basicrum-real-user-monitoring.zip` and `basicrum-real-user-monitoring.zip.sha256`. Do not create the GitHub Release or upload the ZIP manually.
 
 ## Contributing and security
 

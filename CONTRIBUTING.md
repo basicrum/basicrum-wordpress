@@ -24,7 +24,7 @@ The development site is available at <http://localhost:9080/> with `admin` / `ba
 
 The installable plugin is [`plugins/basicrum/`](plugins/basicrum/). Repository root files provide development, browser-test, Docker, CI, and release tooling.
 
-Follow the permanent conventions in [AGENTS.md](AGENTS.md), including WordPress Coding Standards, PHP 7.4 compatibility, ASCII hyphens, synchronized version metadata, privacy-safe consent behavior, and immutable GitHub Actions pins.
+Follow the permanent conventions in [AGENTS.md](AGENTS.md), including WordPress Coding Standards, PHP 7.4 compatibility, ASCII hyphens, the assigned WordPress.org text domain, synchronized version metadata, privacy-safe consent behavior, and immutable GitHub Actions pins.
 
 When changing user-facing text, regenerate the WordPress POT template. Locale-specific PO and MO files are not bundled. When changing settings, keep defaults, rendering, validation, runtime behavior, tests, and documentation synchronized.
 

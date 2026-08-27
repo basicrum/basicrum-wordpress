@@ -41,7 +41,7 @@ services:
       WORDPRESS_DB_PASSWORD: wordpress
     volumes:
       - wordpress_data:/var/www/html
-      - "${BASICRUM_RELEASE_ZIP}:/artifacts/basicrum.zip:ro"
+      - "${BASICRUM_RELEASE_ZIP}:/artifacts/basicrum-real-user-monitoring.zip:ro"
 
 volumes:
   wordpress_data:

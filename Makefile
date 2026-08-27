@@ -4,7 +4,9 @@ WP_SERVICE = wordpress
 DB_SERVICE = db
 WPCLI_SERVICE = wpcli
 JS_SERVICE = javascript
-WPCLI_PLUGIN_WORKDIR = /var/www/html/wp-content/plugins/basicrum
+PLUGIN_SLUG = basicrum-real-user-monitoring
+RELEASE_ARCHIVE = release/$(PLUGIN_SLUG).zip
+WPCLI_PLUGIN_WORKDIR = /var/www/html/wp-content/plugins/$(PLUGIN_SLUG)
 PLUGIN_DIR = plugins/basicrum
 PLUGIN_WORKDIR = /workspace
 TEST_DB_NAME = wordpress_test
@@ -92,6 +94,7 @@ composer-audit:
 conventions:
 	sh tools/verify-ascii-hyphens.sh
 	sh tools/verify-version-consistency.sh
+	sh tools/verify-text-domain.sh
 	sh tools/verify-boomerang-provenance.sh
 
 translations:
@@ -128,10 +131,10 @@ package:
 	$(COMPOSE) run --rm --no-deps -w /repo $(PHP_SERVICE) sh /tools/build-release.sh /repo/$(PLUGIN_DIR) /repo/release
 
 package-verify:
-	$(COMPOSE) run --rm --no-deps -w /repo $(PHP_SERVICE) sh /tools/verify-release.sh /repo/release/basicrum.zip
+	$(COMPOSE) run --rm --no-deps -w /repo $(PHP_SERVICE) sh /tools/verify-release.sh /repo/$(RELEASE_ARCHIVE)
 
 package-smoke: package
-	sh tools/smoke-test-release.sh release/basicrum.zip
+	sh tools/smoke-test-release.sh $(RELEASE_ARCHIVE)
 
 clean:
 	$(COMPOSE) down -v

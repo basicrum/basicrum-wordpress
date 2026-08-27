@@ -87,7 +87,7 @@ standalone translation CI job were removed. Keep the POT-only local generator
 for future gettext changes, and keep locale-specific catalogs out of release
 ZIPs unless bundled translations are deliberately restored.
 
-- [x] Regenerate and commit `languages/basicrum.pot` when source strings change.
+- [x] Regenerate and commit `languages/basicrum-real-user-monitoring.pot` when source strings change.
 - [x] Exclude and reject locale-specific PO/MO files in release packages.
 
 ## 6. Match public page-type lists to the detector (DISC-08)
@@ -207,7 +207,8 @@ severity: the residue is operator configuration, not visitor personal data.
   real WordPress/WooCommerce stack assert `p_type`, `p_gen=wp`, and the
   configured `brum_site_id`; collector is a reserved `.test` host answered
   with HTTP 204.
-- [x] `make conventions`: ASCII hyphen and version consistency checks pass.
+- [x] `make conventions`: ASCII hyphen, version consistency, and WordPress.org
+  text-domain checks pass.
 
 ## 13. Residual test gaps (future work)
 

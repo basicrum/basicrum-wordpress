@@ -242,13 +242,13 @@ jobs:
         run: sh tools/build-release.sh
 
       - name: Install and test packaged plugin
-        run: sh tools/smoke-test-release.sh release/basicrum.zip
+        run: sh tools/smoke-test-release.sh release/basicrum-real-user-monitoring.zip
 
       - name: Upload release artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: basicrum-release
           path: |
-            release/basicrum.zip
-            release/basicrum.zip.sha256
+            release/basicrum-real-user-monitoring.zip
+            release/basicrum-real-user-monitoring.zip.sha256
           if-no-files-found: error

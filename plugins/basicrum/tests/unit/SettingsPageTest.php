@@ -60,7 +60,7 @@ class SettingsPageTest extends TestCase {
 
 		$this->assertStringContainsString( 'class="basicrum-settings-header"', $html );
 		$this->assertStringContainsString( 'class="basicrum-settings-logo"', $html );
-		$this->assertStringContainsString( 'src="https://example.com/wp-content/plugins/basicrum/assets/images/basicrum-logo.png"', $html );
+		$this->assertStringContainsString( 'src="https://example.com/wp-content/plugins/basicrum-real-user-monitoring/assets/images/basicrum-logo.png"', $html );
 		$this->assertStringContainsString( 'alt=""', $html );
 		$this->assertStringContainsString( 'width="48"', $html );
 		$this->assertStringContainsString( 'height="48"', $html );
@@ -882,14 +882,14 @@ class SettingsPageTest extends TestCase {
 
 		Functions\when( 'plugins_url' )->alias(
 			function( $path ) {
-				return 'https://example.com/wp-content/plugins/basicrum/' . $path;
+				return 'https://example.com/wp-content/plugins/basicrum-real-user-monitoring/' . $path;
 			}
 		);
 		Functions\expect( 'wp_enqueue_script' )
 			->once()
 			->with(
 				'basicrum-admin-settings',
-				'https://example.com/wp-content/plugins/basicrum/assets/js/admin/settings.js',
+				'https://example.com/wp-content/plugins/basicrum-real-user-monitoring/assets/js/admin/settings.js',
 				array(),
 				$script_version,
 				true
@@ -898,7 +898,7 @@ class SettingsPageTest extends TestCase {
 			->once()
 			->with(
 				'basicrum-admin-settings-style',
-				'https://example.com/wp-content/plugins/basicrum/assets/css/admin/settings.css',
+				'https://example.com/wp-content/plugins/basicrum-real-user-monitoring/assets/css/admin/settings.css',
 				array(),
 				$style_version
 			);
@@ -1011,7 +1011,7 @@ class SettingsPageTest extends TestCase {
 	private function render_settings_page_html() {
 		Functions\when( 'plugins_url' )->alias(
 			function( $path ) {
-				return 'https://example.com/wp-content/plugins/basicrum/' . $path;
+				return 'https://example.com/wp-content/plugins/basicrum-real-user-monitoring/' . $path;
 			}
 		);
 		Functions\expect( 'current_user_can' )->once()->with( 'manage_options' )->andReturn( true );

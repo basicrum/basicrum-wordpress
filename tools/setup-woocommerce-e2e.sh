@@ -63,7 +63,7 @@ wp wc tool run install_pages --user=1 --path="${WP_PATH}"
 wp option update woocommerce_coming_soon no --path="${WP_PATH}"
 wp option update woocommerce_store_pages_only no --path="${WP_PATH}"
 
-wp plugin activate basicrum --path="${WP_PATH}"
+wp plugin activate basicrum-real-user-monitoring --path="${WP_PATH}"
 wp rewrite structure '/%postname%/' --hard --path="${WP_PATH}"
 
 wp option update basicrum_settings \

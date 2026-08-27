@@ -125,7 +125,7 @@ class Validate {
 			add_settings_error(
 				'basicrum_settings',
 				'beacon_url_https',
-				esc_html__( 'Beacon URL was automatically upgraded to HTTPS.', 'basicrum' ),
+				esc_html__( 'Beacon URL was automatically upgraded to HTTPS.', 'basicrum-real-user-monitoring' ),
 				'info'
 			);
 		}
@@ -134,7 +134,7 @@ class Validate {
 			add_settings_error(
 				'basicrum_settings',
 				'beacon_url_invalid',
-				esc_html__( 'Invalid Beacon URL. The default URL has been restored.', 'basicrum' ),
+				esc_html__( 'Invalid Beacon URL. The default URL has been restored.', 'basicrum-real-user-monitoring' ),
 				'error'
 			);
 			return $defaults['beacon_url'];
@@ -160,7 +160,7 @@ class Validate {
 			add_settings_error(
 				'basicrum_settings',
 				'brum_site_id_invalid',
-				esc_html__( 'Invalid Brum Site ID. Copy it from the Basicrum backoffice and try again.', 'basicrum' ),
+				esc_html__( 'Invalid Brum Site ID. Copy it from the Basicrum backoffice and try again.', 'basicrum-real-user-monitoring' ),
 				'error'
 			);
 			return '';
@@ -187,7 +187,7 @@ class Validate {
 			add_settings_error(
 				'basicrum_settings',
 				'delay_ms_max',
-				esc_html__( 'Delay cannot exceed 30000 milliseconds. It has been capped at 30000.', 'basicrum' ),
+				esc_html__( 'Delay cannot exceed 30000 milliseconds. It has been capped at 30000.', 'basicrum-real-user-monitoring' ),
 				'warning'
 			);
 			return 30000;
@@ -213,7 +213,7 @@ class Validate {
 		add_settings_error(
 			'basicrum_settings',
 			'consent_enabled_invalid',
-			esc_html__( 'Invalid visitor consent value. Basicrum will require consent before monitoring.', 'basicrum' ),
+			esc_html__( 'Invalid visitor consent value. Basicrum will require consent before monitoring.', 'basicrum-real-user-monitoring' ),
 			'warning'
 		);
 
@@ -237,7 +237,7 @@ class Validate {
 		add_settings_error(
 			'basicrum_settings',
 			'consent_integration_invalid',
-			esc_html__( 'Invalid consent tool connection value. Basicrum will use manual callbacks.', 'basicrum' ),
+			esc_html__( 'Invalid consent tool connection value. Basicrum will use manual callbacks.', 'basicrum-real-user-monitoring' ),
 			'warning'
 		);
 
