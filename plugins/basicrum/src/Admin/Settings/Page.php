@@ -158,6 +158,8 @@ class Page {
 			self::GROUP,
 			Helpers::OPTION_KEY,
 			array(
+				'type'              => 'array',
+				'default'           => Helpers::get_defaults(),
 				'sanitize_callback' => array( new Validate(), 'sanitize' ),
 			)
 		);

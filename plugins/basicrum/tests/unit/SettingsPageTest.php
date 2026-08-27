@@ -8,7 +8,9 @@
 namespace Basicrum\WP\Tests\Unit;
 
 use Basicrum\WP\Admin\Settings\Page;
+use Basicrum\WP\Admin\Settings\Validate;
 use Basicrum\WP\ConsentIntegration;
+use Basicrum\WP\Helpers;
 use Basicrum\WP\Tests\TestCase;
 use Brain\Monkey\Functions;
 use Mockery;
@@ -82,6 +84,33 @@ class SettingsPageTest extends TestCase {
 		$this->assertContains( 'admin_init', $hooks );
 		$this->assertContains( 'admin_enqueue_scripts', $hooks );
 		$this->assertNotContains( 'admin_notices', $hooks );
+	}
+
+	/**
+	 * Test the compound settings option declares its schema and sanitizer.
+	 */
+	public function test_settings_registration_declares_array_sanitization() {
+		$registration = array();
+
+		Functions\when( 'get_option' )->justReturn( Helpers::get_defaults() );
+		Functions\when( 'register_setting' )->alias(
+			function( $group, $option, $args ) use ( &$registration ) {
+				$registration = array( $group, $option, $args );
+			}
+		);
+		Functions\when( 'add_settings_section' )->justReturn();
+		Functions\when( 'add_settings_field' )->justReturn();
+
+		$page = new Page();
+		$page->register_settings();
+
+		$this->assertSame( Page::GROUP, $registration[0] );
+		$this->assertSame( Helpers::OPTION_KEY, $registration[1] );
+		$this->assertSame( 'array', $registration[2]['type'] );
+		$this->assertSame( Helpers::get_defaults(), $registration[2]['default'] );
+		$this->assertIsCallable( $registration[2]['sanitize_callback'] );
+		$this->assertInstanceOf( Validate::class, $registration[2]['sanitize_callback'][0] );
+		$this->assertSame( 'sanitize', $registration[2]['sanitize_callback'][1] );
 	}
 
 	/**
