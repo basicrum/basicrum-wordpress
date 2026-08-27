@@ -275,6 +275,52 @@ class ValidateTest extends TestCase {
 	}
 
 	/**
+	 * Test malformed top-level input fails closed to canonical defaults.
+	 *
+	 * @dataProvider malformed_input_provider
+	 *
+	 * @param mixed $input Malformed option input.
+	 */
+	public function test_malformed_top_level_input_returns_defaults( $input ) {
+		$this->assertSame( \Basicrum\WP\Helpers::get_defaults(), $this->validate->sanitize( $input ) );
+	}
+
+	/**
+	 * Provide malformed top-level option values.
+	 *
+	 * @return array[] Test cases.
+	 */
+	public function malformed_input_provider() {
+		return array(
+			'null'    => array( null ),
+			'string'  => array( 'enabled=1' ),
+			'integer' => array( 1 ),
+			'object'  => array( new \stdClass() ),
+		);
+	}
+
+	/**
+	 * Test nested values cannot bypass field-specific sanitization.
+	 */
+	public function test_nested_field_values_are_rejected() {
+		$input = $this->full_input(
+			array(
+				'enabled'      => array( '1' ),
+				'beacon_url'   => array( 'https://example.com/beacon' ),
+				'brum_site_id' => array( '550e8400-e29b-41d4-a716-446655440000' ),
+				'delay_ms'     => array( '3000' ),
+			)
+		);
+
+		$result = $this->validate->sanitize( $input );
+
+		$this->assertSame( '0', $result['enabled'] );
+		$this->assertSame( '', $result['beacon_url'] );
+		$this->assertSame( '', $result['brum_site_id'] );
+		$this->assertSame( 0, $result['delay_ms'] );
+	}
+
+	/**
 	 * Build a full input array with defaults, overridden by given values.
 	 *
 	 * @param array $overrides Values to override.

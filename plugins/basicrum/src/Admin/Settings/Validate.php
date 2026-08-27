@@ -36,12 +36,17 @@ class Validate {
 	/**
 	 * Sanitize and validate all settings input.
 	 *
-	 * @param array $input Raw input from the settings form.
+	 * @param mixed $input Raw input from the settings form.
 	 * @return array Sanitized settings.
 	 */
 	public function sanitize( $input ) {
-		$output   = array();
 		$defaults = Helpers::get_defaults();
+
+		if ( ! is_array( $input ) ) {
+			return $defaults;
+		}
+
+		$output = array();
 
 		// Enabled (checkbox).
 		$output['enabled'] = $this->sanitize_checkbox( $input, 'enabled' );
@@ -95,7 +100,7 @@ class Validate {
 	 * @return string '1' or '0'.
 	 */
 	private function sanitize_checkbox( $input, $key ) {
-		return ! empty( $input[ $key ] ) ? '1' : '0';
+		return isset( $input[ $key ] ) && '1' === $input[ $key ] ? '1' : '0';
 	}
 
 	/**
@@ -107,7 +112,7 @@ class Validate {
 	 * @return string Sanitized URL.
 	 */
 	private function sanitize_beacon_url( $input, $defaults, $development_mode ) {
-		if ( empty( $input['beacon_url'] ) ) {
+		if ( empty( $input['beacon_url'] ) || ! is_string( $input['beacon_url'] ) ) {
 			return $defaults['beacon_url'];
 		}
 
@@ -120,7 +125,7 @@ class Validate {
 			add_settings_error(
 				'basicrum_settings',
 				'beacon_url_https',
-				esc_html__( 'Beacon URL was automatically upgraded to HTTPS.', 'basicrum' ),
+				esc_html__( 'Beacon URL was automatically upgraded to HTTPS.', 'basicrum-real-user-monitoring' ),
 				'info'
 			);
 		}
@@ -129,7 +134,7 @@ class Validate {
 			add_settings_error(
 				'basicrum_settings',
 				'beacon_url_invalid',
-				esc_html__( 'Invalid Beacon URL. The default URL has been restored.', 'basicrum' ),
+				esc_html__( 'Invalid Beacon URL. The default URL has been restored.', 'basicrum-real-user-monitoring' ),
 				'error'
 			);
 			return $defaults['beacon_url'];
@@ -145,7 +150,7 @@ class Validate {
 	 * @return string Sanitized Brum Site ID or empty string.
 	 */
 	private function sanitize_brum_site_id( $input ) {
-		if ( empty( $input['brum_site_id'] ) ) {
+		if ( empty( $input['brum_site_id'] ) || ! is_string( $input['brum_site_id'] ) ) {
 			return '';
 		}
 
@@ -155,7 +160,7 @@ class Validate {
 			add_settings_error(
 				'basicrum_settings',
 				'brum_site_id_invalid',
-				esc_html__( 'Invalid Brum Site ID. Copy it from the Basicrum backoffice and try again.', 'basicrum' ),
+				esc_html__( 'Invalid Brum Site ID. Copy it from the Basicrum backoffice and try again.', 'basicrum-real-user-monitoring' ),
 				'error'
 			);
 			return '';
@@ -172,7 +177,7 @@ class Validate {
 	 * @return int Sanitized delay in milliseconds.
 	 */
 	private function sanitize_delay( $input, $defaults ) {
-		if ( ! isset( $input['delay_ms'] ) ) {
+		if ( ! isset( $input['delay_ms'] ) || ! is_scalar( $input['delay_ms'] ) ) {
 			return (int) $defaults['delay_ms'];
 		}
 
@@ -182,7 +187,7 @@ class Validate {
 			add_settings_error(
 				'basicrum_settings',
 				'delay_ms_max',
-				esc_html__( 'Delay cannot exceed 30000 milliseconds. It has been capped at 30000.', 'basicrum' ),
+				esc_html__( 'Delay cannot exceed 30000 milliseconds. It has been capped at 30000.', 'basicrum-real-user-monitoring' ),
 				'warning'
 			);
 			return 30000;
@@ -208,7 +213,7 @@ class Validate {
 		add_settings_error(
 			'basicrum_settings',
 			'consent_enabled_invalid',
-			esc_html__( 'Invalid visitor consent value. Basicrum will require consent before monitoring.', 'basicrum' ),
+			esc_html__( 'Invalid visitor consent value. Basicrum will require consent before monitoring.', 'basicrum-real-user-monitoring' ),
 			'warning'
 		);
 
@@ -232,7 +237,7 @@ class Validate {
 		add_settings_error(
 			'basicrum_settings',
 			'consent_integration_invalid',
-			esc_html__( 'Invalid consent tool connection value. Basicrum will use manual callbacks.', 'basicrum' ),
+			esc_html__( 'Invalid consent tool connection value. Basicrum will use manual callbacks.', 'basicrum-real-user-monitoring' ),
 			'warning'
 		);
 

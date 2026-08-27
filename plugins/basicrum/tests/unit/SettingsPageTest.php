@@ -8,7 +8,9 @@
 namespace Basicrum\WP\Tests\Unit;
 
 use Basicrum\WP\Admin\Settings\Page;
+use Basicrum\WP\Admin\Settings\Validate;
 use Basicrum\WP\ConsentIntegration;
+use Basicrum\WP\Helpers;
 use Basicrum\WP\Tests\TestCase;
 use Brain\Monkey\Functions;
 use Mockery;
@@ -51,29 +53,64 @@ class SettingsPageTest extends TestCase {
 	 * Test the settings page renders the packaged Basicrum logo.
 	 */
 	public function test_settings_page_renders_brand_logo() {
-		Functions\when( 'plugins_url' )->alias(
-			function( $path ) {
-				return 'https://example.com/wp-content/plugins/basicrum/' . $path;
-			}
-		);
-		Functions\expect( 'current_user_can' )->once()->with( 'manage_options' )->andReturn( true );
-		Functions\when( 'get_admin_page_title' )->justReturn( 'Basicrum Settings' );
-		Functions\when( 'settings_fields' )->justReturn();
-		Functions\when( 'do_settings_sections' )->justReturn();
-		Functions\when( 'submit_button' )->justReturn();
+		$this->set_settings( array( 'enabled' => '0' ) );
+		Functions\expect( 'settings_errors' )->once();
 
-		$page = new Page();
-
-		ob_start();
-		$page->render_settings_page();
-		$html = ob_get_clean();
+		$html = $this->render_settings_page_html();
 
 		$this->assertStringContainsString( 'class="basicrum-settings-header"', $html );
 		$this->assertStringContainsString( 'class="basicrum-settings-logo"', $html );
-		$this->assertStringContainsString( 'src="https://example.com/wp-content/plugins/basicrum/assets/images/basicrum-logo.png"', $html );
+		$this->assertStringContainsString( 'src="https://example.com/wp-content/plugins/basicrum-real-user-monitoring/assets/images/basicrum-logo.png"', $html );
 		$this->assertStringContainsString( 'alt=""', $html );
 		$this->assertStringContainsString( 'width="48"', $html );
 		$this->assertStringContainsString( 'height="48"', $html );
+	}
+
+	/**
+	 * Test settings notices are not registered across the administration area.
+	 */
+	public function test_settings_notices_are_not_hooked_globally() {
+		$hooks = array();
+
+		Functions\when( 'add_action' )->alias(
+			function( $hook_name ) use ( &$hooks ) {
+				$hooks[] = $hook_name;
+			}
+		);
+
+		new Page();
+
+		$this->assertContains( 'admin_menu', $hooks );
+		$this->assertContains( 'admin_init', $hooks );
+		$this->assertContains( 'admin_enqueue_scripts', $hooks );
+		$this->assertNotContains( 'admin_notices', $hooks );
+	}
+
+	/**
+	 * Test the compound settings option declares its schema and sanitizer.
+	 */
+	public function test_settings_registration_declares_array_sanitization() {
+		$registration = array();
+
+		Functions\when( 'get_option' )->justReturn( Helpers::get_defaults() );
+		Functions\when( 'register_setting' )->alias(
+			function( $group, $option, $args ) use ( &$registration ) {
+				$registration = array( $group, $option, $args );
+			}
+		);
+		Functions\when( 'add_settings_section' )->justReturn();
+		Functions\when( 'add_settings_field' )->justReturn();
+
+		$page = new Page();
+		$page->register_settings();
+
+		$this->assertSame( Page::GROUP, $registration[0] );
+		$this->assertSame( Helpers::OPTION_KEY, $registration[1] );
+		$this->assertSame( 'array', $registration[2]['type'] );
+		$this->assertSame( Helpers::get_defaults(), $registration[2]['default'] );
+		$this->assertIsCallable( $registration[2]['sanitize_callback'] );
+		$this->assertInstanceOf( Validate::class, $registration[2]['sanitize_callback'][0] );
+		$this->assertSame( 'sanitize', $registration[2]['sanitize_callback'][1] );
 	}
 
 	/**
@@ -845,14 +882,14 @@ class SettingsPageTest extends TestCase {
 
 		Functions\when( 'plugins_url' )->alias(
 			function( $path ) {
-				return 'https://example.com/wp-content/plugins/basicrum/' . $path;
+				return 'https://example.com/wp-content/plugins/basicrum-real-user-monitoring/' . $path;
 			}
 		);
 		Functions\expect( 'wp_enqueue_script' )
 			->once()
 			->with(
 				'basicrum-admin-settings',
-				'https://example.com/wp-content/plugins/basicrum/assets/js/admin/settings.js',
+				'https://example.com/wp-content/plugins/basicrum-real-user-monitoring/assets/js/admin/settings.js',
 				array(),
 				$script_version,
 				true
@@ -861,7 +898,7 @@ class SettingsPageTest extends TestCase {
 			->once()
 			->with(
 				'basicrum-admin-settings-style',
-				'https://example.com/wp-content/plugins/basicrum/assets/css/admin/settings.css',
+				'https://example.com/wp-content/plugins/basicrum-real-user-monitoring/assets/css/admin/settings.css',
 				array(),
 				$style_version
 			);
@@ -890,7 +927,7 @@ class SettingsPageTest extends TestCase {
 	 * @param string $brum_site_id     Brum Site ID setting.
 	 * @param string $expected_message Expected warning fragment.
 	 */
-	public function test_admin_notice_when_required_settings_are_missing( $beacon_url, $brum_site_id, $expected_message ) {
+	public function test_settings_notice_when_required_settings_are_missing( $beacon_url, $brum_site_id, $expected_message ) {
 		$this->set_settings(
 			array(
 				'enabled'      => '1',
@@ -899,7 +936,6 @@ class SettingsPageTest extends TestCase {
 			)
 		);
 
-		Functions\expect( 'current_user_can' )->once()->with( 'manage_options' )->andReturn( true );
 		Functions\expect( 'add_settings_error' )
 			->once()
 			->with(
@@ -915,8 +951,7 @@ class SettingsPageTest extends TestCase {
 			);
 		Functions\expect( 'settings_errors' )->once();
 
-		$page = new Page();
-		$page->admin_notices();
+		$this->render_settings_page_html();
 	}
 
 	/**
@@ -944,12 +979,10 @@ class SettingsPageTest extends TestCase {
 			)
 		);
 
-		Functions\expect( 'current_user_can' )->once()->with( 'manage_options' )->andReturn( true );
 		Functions\expect( 'add_settings_error' )->never();
 		Functions\expect( 'settings_errors' )->once();
 
-		$page = new Page();
-		$page->admin_notices();
+		$this->render_settings_page_html();
 	}
 
 	/**
@@ -964,11 +997,33 @@ class SettingsPageTest extends TestCase {
 			)
 		);
 
-		Functions\expect( 'current_user_can' )->once()->with( 'manage_options' )->andReturn( true );
 		Functions\expect( 'add_settings_error' )->never();
 		Functions\expect( 'settings_errors' )->once();
 
+		$this->render_settings_page_html();
+	}
+
+	/**
+	 * Render the Basicrum settings page with its WordPress dependencies stubbed.
+	 *
+	 * @return string Rendered settings page HTML.
+	 */
+	private function render_settings_page_html() {
+		Functions\when( 'plugins_url' )->alias(
+			function( $path ) {
+				return 'https://example.com/wp-content/plugins/basicrum-real-user-monitoring/' . $path;
+			}
+		);
+		Functions\expect( 'current_user_can' )->once()->with( 'manage_options' )->andReturn( true );
+		Functions\when( 'get_admin_page_title' )->justReturn( 'Basicrum Settings' );
+		Functions\when( 'settings_fields' )->justReturn();
+		Functions\when( 'do_settings_sections' )->justReturn();
+		Functions\when( 'submit_button' )->justReturn();
+
 		$page = new Page();
-		$page->admin_notices();
+
+		ob_start();
+		$page->render_settings_page();
+		return ob_get_clean();
 	}
 }

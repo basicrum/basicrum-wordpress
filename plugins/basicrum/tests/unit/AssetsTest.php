@@ -36,7 +36,7 @@ class AssetsTest extends TestCase {
 		Functions\when( 'add_filter' )->justReturn();
 		Functions\when( 'add_action' )->justReturn();
 		Functions\when( 'plugins_url' )->alias( function( $path, $file ) {
-			return 'https://example.com/wp-content/plugins/basicrum/' . $path;
+			return 'https://example.com/wp-content/plugins/basicrum-real-user-monitoring/' . $path;
 		});
 		Functions\when( 'esc_url' )->returnArg();
 		Functions\when( 'esc_url_raw' )->returnArg();
@@ -389,7 +389,7 @@ class AssetsTest extends TestCase {
 		$assets->maybe_enqueue();
 
 		$this->assertSame(
-			'https://example.com/wp-content/plugins/basicrum/assets/js/loaders/' . $expected_file,
+			'https://example.com/wp-content/plugins/basicrum-real-user-monitoring/assets/js/loaders/' . $expected_file,
 			$captured_url
 		);
 	}
@@ -452,7 +452,7 @@ class AssetsTest extends TestCase {
 
 		$this->assertSame(
 			array(
-				'https://example.com/wp-content/plugins/basicrum/assets/js/integrations/wp-consent-api.js',
+				'https://example.com/wp-content/plugins/basicrum-real-user-monitoring/assets/js/integrations/wp-consent-api.js',
 				array( Assets::HANDLE_LOADER ),
 				BASICRUM_VERSION,
 				true,

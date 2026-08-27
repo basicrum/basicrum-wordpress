@@ -53,7 +53,6 @@ class Page {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_menu_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
 	}
 
@@ -112,8 +111,8 @@ class Page {
 	 */
 	public function add_menu_page() {
 		add_menu_page(
-			esc_html__( 'Basicrum Settings', 'basicrum' ),
-			esc_html__( 'Basicrum', 'basicrum' ),
+			esc_html__( 'Basicrum Settings', 'basicrum-real-user-monitoring' ),
+			esc_html__( 'Basicrum', 'basicrum-real-user-monitoring' ),
 			'manage_options',
 			self::SLUG,
 			array( $this, 'render_settings_page' ),
@@ -159,6 +158,8 @@ class Page {
 			self::GROUP,
 			Helpers::OPTION_KEY,
 			array(
+				'type'              => 'array',
+				'default'           => Helpers::get_defaults(),
 				'sanitize_callback' => array( new Validate(), 'sanitize' ),
 			)
 		);
@@ -179,72 +180,72 @@ class Page {
 
 		add_settings_section(
 			'basicrum_section_general',
-			esc_html__( 'General Settings', 'basicrum' ),
+			esc_html__( 'General Settings', 'basicrum-real-user-monitoring' ),
 			'__return_empty_string',
 			self::SLUG
 		);
 
 		add_settings_field(
 			'enabled',
-			esc_html__( 'Enable Basicrum', 'basicrum' ),
+			esc_html__( 'Enable Basicrum', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_checkbox_field' ),
 			self::SLUG,
 			'basicrum_section_general',
 			array(
 				'id'    => 'enabled',
-				'label' => __( 'Enable real user monitoring on your site.', 'basicrum' ),
+				'label' => __( 'Enable real user monitoring on your site.', 'basicrum-real-user-monitoring' ),
 			)
 		);
 
 		add_settings_field(
 			'beacon_url',
-			esc_html__( 'Beacon URL', 'basicrum' ),
+			esc_html__( 'Beacon URL', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_text_field' ),
 			self::SLUG,
 			'basicrum_section_general',
 			array(
 				'id'                    => 'beacon_url',
 				'label_for'             => 'basicrum_beacon_url',
-				'label'                 => __( 'URL where Boomerang beacons are sent. Example: https://www.example.com/beacon/catcher. Required when Basicrum is enabled.', 'basicrum' ),
+				'label'                 => __( 'URL where Boomerang beacons are sent. Example: https://www.example.com/beacon/catcher. Required when Basicrum is enabled.', 'basicrum-real-user-monitoring' ),
 				'size'                  => 60,
 				'class'                 => $this->get_required_field_row_class( $settings, 'beacon_url' ),
 				'required_when_enabled' => true,
-				'required_message'      => __( 'Beacon URL is required when Basicrum is enabled.', 'basicrum' ),
+				'required_message'      => __( 'Beacon URL is required when Basicrum is enabled.', 'basicrum-real-user-monitoring' ),
 			)
 		);
 
 		add_settings_field(
 			'brum_site_id',
-			esc_html__( 'Brum Site ID', 'basicrum' ),
+			esc_html__( 'Brum Site ID', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_text_field' ),
 			self::SLUG,
 			'basicrum_section_general',
 			array(
 				'id'                    => 'brum_site_id',
 				'label_for'             => 'basicrum_brum_site_id',
-				'label'                 => __( 'Copy the Brum Site ID from the Basicrum backoffice. Required when Basicrum is enabled.', 'basicrum' ),
+				'label'                 => __( 'Copy the Brum Site ID from the Basicrum backoffice. Required when Basicrum is enabled.', 'basicrum-real-user-monitoring' ),
 				'size'                  => 40,
 				'class'                 => $this->get_required_field_row_class( $settings, 'brum_site_id' ),
 				'required_when_enabled' => true,
-				'required_message'      => __( 'Brum Site ID is required when Basicrum is enabled.', 'basicrum' ),
+				'required_message'      => __( 'Brum Site ID is required when Basicrum is enabled.', 'basicrum-real-user-monitoring' ),
 			)
 		);
 
 		add_settings_field(
 			'track_admins',
-			esc_html__( 'Track Admin Users', 'basicrum' ),
+			esc_html__( 'Track Admin Users', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_checkbox_field' ),
 			self::SLUG,
 			'basicrum_section_general',
 			array(
 				'id'    => 'track_admins',
-				'label' => __( 'Track logged-in administrators (users with manage_options capability).', 'basicrum' ),
+				'label' => __( 'Track logged-in administrators (users with manage_options capability).', 'basicrum-real-user-monitoring' ),
 			)
 		);
 
 		add_settings_field(
 			'boomerang_version',
-			esc_html__( 'Boomerang Version', 'basicrum' ),
+			esc_html__( 'Boomerang Version', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_boomerang_version' ),
 			self::SLUG,
 			'basicrum_section_general'
@@ -330,46 +331,46 @@ class Page {
 
 		add_settings_section(
 			'basicrum_section_privacy',
-			esc_html__( 'Visitor Privacy', 'basicrum' ),
+			esc_html__( 'Visitor Privacy', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_privacy_section_intro' ),
 			self::SLUG
 		);
 
 		add_settings_field(
 			'strip_query_string',
-			esc_html__( 'Strip Query Strings', 'basicrum' ),
+			esc_html__( 'Strip Query Strings', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_checkbox_field' ),
 			self::SLUG,
 			'basicrum_section_privacy',
 			array(
 				'id'    => 'strip_query_string',
-				'label' => __( 'When enabled, replace complete query strings in page, navigation, referrer, and resource URLs with ?qs-redacted before sending beacons. URL paths are still collected.', 'basicrum' ),
+				'label' => __( 'When enabled, replace complete query strings in page, navigation, referrer, and resource URLs with ?qs-redacted before sending beacons. URL paths are still collected.', 'basicrum-real-user-monitoring' ),
 			)
 		);
 
 		add_settings_field(
 			'consent_enabled',
-			esc_html__( 'Visitor Consent', 'basicrum' ),
+			esc_html__( 'Visitor Consent', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_radio_field' ),
 			self::SLUG,
 			'basicrum_section_privacy',
 			array(
 				'id'                 => 'consent_enabled',
-				'legend'             => __( 'Visitor Consent', 'basicrum' ),
-				'label'              => __( 'Choose whether Boomerang requires an allow decision before monitoring a visitor.', 'basicrum' ),
+				'legend'             => __( 'Visitor Consent', 'basicrum-real-user-monitoring' ),
+				'label'              => __( 'Choose whether Boomerang requires an allow decision before monitoring a visitor.', 'basicrum-real-user-monitoring' ),
 				'announcement_class' => 'basicrum-consent-requirement-announcement',
 				'announcements'      => array(
-					'0' => __( 'Consent Tool Connection hidden.', 'basicrum' ),
-					'1' => __( 'Consent Tool Connection shown.', 'basicrum' ),
+					'0' => __( 'Consent Tool Connection hidden.', 'basicrum-real-user-monitoring' ),
+					'1' => __( 'Consent Tool Connection shown.', 'basicrum-real-user-monitoring' ),
 				),
 				'options'            => array(
 					'0' => array(
-						'label'       => __( 'Monitor without consent', 'basicrum' ),
-						'description' => __( 'Boomerang loads for visitors without a consent check. It may set cookies and send performance data. Use this only when your site is permitted to monitor without prior consent.', 'basicrum' ),
+						'label'       => __( 'Monitor without consent', 'basicrum-real-user-monitoring' ),
+						'description' => __( 'Boomerang loads for visitors without a consent check. It may set cookies and send performance data. Use this only when your site is permitted to monitor without prior consent.', 'basicrum-real-user-monitoring' ),
 					),
 					'1' => array(
-						'label'       => __( 'Require consent before monitoring (recommended)', 'basicrum' ),
-						'description' => __( 'Boomerang stays off and no data is sent until your consent or cookie tool reports an allow decision on each page. Visitors who decline are not monitored. Connect your tool below under Consent Tool Connection.', 'basicrum' ),
+						'label'       => __( 'Require consent before monitoring (recommended)', 'basicrum-real-user-monitoring' ),
+						'description' => __( 'Boomerang stays off and no data is sent until your consent or cookie tool reports an allow decision on each page. Visitors who decline are not monitored. Connect your tool below under Consent Tool Connection.', 'basicrum-real-user-monitoring' ),
 					),
 				),
 			)
@@ -384,18 +385,18 @@ class Page {
 			array(
 				'id'             => 'consent_integration',
 				'class'          => $connection_row_class,
-				'legend'         => __( 'Consent Tool Connection', 'basicrum' ),
+				'legend'         => __( 'Consent Tool Connection', 'basicrum-real-user-monitoring' ),
 				'visible_legend' => true,
-				'label'          => __( 'Choose how your consent tool\'s decision reaches Basicrum.', 'basicrum' ),
+				'label'          => __( 'Choose how your consent tool\'s decision reaches Basicrum.', 'basicrum-real-user-monitoring' ),
 				'options'        => array(
 					ConsentIntegration::MODE_AUTOMATIC => array(
-						'label'       => __( 'Automatic connection (recommended)', 'basicrum' ),
-						'description' => __( 'Best for most sites. Detect a supported consent tool and load one matching Basicrum adapter.', 'basicrum' ),
+						'label'       => __( 'Automatic connection (recommended)', 'basicrum-real-user-monitoring' ),
+						'description' => __( 'Best for most sites. Detect a supported consent tool and load one matching Basicrum adapter.', 'basicrum-real-user-monitoring' ),
 						'controls'    => 'basicrum-consent-automatic-panel',
 					),
 					ConsentIntegration::MODE_MANUAL    => array(
-						'label'       => __( 'Manual callbacks', 'basicrum' ),
-						'description' => __( 'For unsupported or custom tools, or when a webmaster already manages the integration snippet.', 'basicrum' ),
+						'label'       => __( 'Manual callbacks', 'basicrum-real-user-monitoring' ),
+						'description' => __( 'For unsupported or custom tools, or when a webmaster already manages the integration snippet.', 'basicrum-real-user-monitoring' ),
 						'controls'    => 'basicrum-consent-manual-panel',
 					),
 				),
@@ -411,7 +412,7 @@ class Page {
 	public function render_privacy_section_intro() {
 		printf(
 			'<p>%s</p>',
-			esc_html__( 'Control URL query-string handling and choose whether monitoring waits for visitor consent. Basicrum does not display a consent popup, determine your legal basis, or make a site compliant by itself.', 'basicrum' )
+			esc_html__( 'Control URL query-string handling and choose whether monitoring waits for visitor consent. Basicrum does not display a consent popup, determine your legal basis, or make a site compliant by itself.', 'basicrum-real-user-monitoring' )
 		);
 	}
 
@@ -423,32 +424,32 @@ class Page {
 	private function add_performance_section() {
 		add_settings_section(
 			'basicrum_section_performance',
-			esc_html__( 'Performance', 'basicrum' ),
+			esc_html__( 'Performance', 'basicrum-real-user-monitoring' ),
 			'__return_empty_string',
 			self::SLUG
 		);
 
 		add_settings_field(
 			'wait_after_onload',
-			esc_html__( 'Wait After Onload', 'basicrum' ),
+			esc_html__( 'Wait After Onload', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_checkbox_field' ),
 			self::SLUG,
 			'basicrum_section_performance',
 			array(
 				'id'    => 'wait_after_onload',
-				'label' => __( 'Delay beacon sending until after page load completes.', 'basicrum' ),
+				'label' => __( 'Delay beacon sending until after page load completes.', 'basicrum-real-user-monitoring' ),
 			)
 		);
 
 		add_settings_field(
 			'delay_ms',
-			esc_html__( 'Delay (milliseconds)', 'basicrum' ),
+			esc_html__( 'Delay (milliseconds)', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_number_field' ),
 			self::SLUG,
 			'basicrum_section_performance',
 			array(
 				'id'    => 'delay_ms',
-				'label' => __( 'Milliseconds to delay the beacon after onload. Leave 0 to disable the delay.', 'basicrum' ),
+				'label' => __( 'Milliseconds to delay the beacon after onload. Leave 0 to disable the delay.', 'basicrum-real-user-monitoring' ),
 				'min'   => 0,
 				'max'   => 30000,
 			)
@@ -456,17 +457,17 @@ class Page {
 
 		add_settings_field(
 			'script_position',
-			esc_html__( 'Script Position', 'basicrum' ),
+			esc_html__( 'Script Position', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_radio_field' ),
 			self::SLUG,
 			'basicrum_section_performance',
 			array(
 				'id'      => 'script_position',
-				'legend'  => __( 'Script Position', 'basicrum' ),
-				'label'   => __( 'Where to insert the monitoring script.', 'basicrum' ),
+				'legend'  => __( 'Script Position', 'basicrum-real-user-monitoring' ),
+				'label'   => __( 'Where to insert the monitoring script.', 'basicrum-real-user-monitoring' ),
 				'options' => array(
-					'header' => __( 'Header (wp_head)', 'basicrum' ),
-					'footer' => __( 'Footer (wp_footer)', 'basicrum' ),
+					'header' => __( 'Header (wp_head)', 'basicrum-real-user-monitoring' ),
+					'footer' => __( 'Footer (wp_footer)', 'basicrum-real-user-monitoring' ),
 				),
 			)
 		);
@@ -480,32 +481,32 @@ class Page {
 	private function add_developer_section() {
 		add_settings_section(
 			'basicrum_section_developer',
-			esc_html__( 'Developer Settings', 'basicrum' ),
+			esc_html__( 'Developer Settings', 'basicrum-real-user-monitoring' ),
 			'__return_empty_string',
 			self::SLUG
 		);
 
 		add_settings_field(
 			'development_mode',
-			esc_html__( 'HTTP Strictness', 'basicrum' ),
+			esc_html__( 'HTTP Strictness', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_checkbox_field' ),
 			self::SLUG,
 			'basicrum_section_developer',
 			array(
 				'id'    => 'development_mode',
-				'label' => __( 'Allow HTTP beacon URLs for local testing. Do not enable this on production sites.', 'basicrum' ),
+				'label' => __( 'Allow HTTP beacon URLs for local testing. Do not enable this on production sites.', 'basicrum-real-user-monitoring' ),
 			)
 		);
 
 		add_settings_field(
 			'use_unminified_loaders',
-			esc_html__( 'Use Unminified Loaders', 'basicrum' ),
+			esc_html__( 'Use Unminified Loaders', 'basicrum-real-user-monitoring' ),
 			array( $this, 'render_checkbox_field' ),
 			self::SLUG,
 			'basicrum_section_developer',
 			array(
 				'id'    => 'use_unminified_loaders',
-				'label' => __( 'Load unminified JavaScript loaders for debugging.', 'basicrum' ),
+				'label' => __( 'Load unminified JavaScript loaders for debugging.', 'basicrum-real-user-monitoring' ),
 			)
 		);
 	}
@@ -531,6 +532,7 @@ class Page {
 				/>
 				<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			</div>
+			<?php $this->render_settings_notices(); ?>
 			<form action="options.php" method="post">
 				<?php
 				settings_fields( self::GROUP );
@@ -543,15 +545,15 @@ class Page {
 	}
 
 	/**
-	 * Display admin notices for settings errors and incomplete configuration.
+	 * Display settings errors and incomplete-configuration guidance.
+	 *
+	 * This is called only while rendering the Basicrum settings page so plugin
+	 * notices do not appear throughout the WordPress administration area.
 	 *
 	 * @return void
 	 */
-	public function admin_notices() {
-		if ( current_user_can( 'manage_options' ) ) {
-			$this->add_required_settings_notice();
-		}
-
+	private function render_settings_notices() {
+		$this->add_required_settings_notice();
 		settings_errors();
 	}
 
@@ -571,18 +573,18 @@ class Page {
 		$settings_link = sprintf(
 			'<a href="%1$s">%2$s</a>',
 			esc_url( admin_url( 'admin.php?page=' . self::SLUG ) ),
-			esc_html__( 'Basicrum Settings', 'basicrum' )
+			esc_html__( 'Basicrum Settings', 'basicrum-real-user-monitoring' )
 		);
 
 		if ( in_array( 'beacon_url', $missing_settings, true ) && in_array( 'brum_site_id', $missing_settings, true ) ) {
 			/* translators: %s: Link to the Basicrum settings page. */
-			$message = sprintf( __( 'Basicrum monitoring is enabled but inactive because the Beacon URL and Brum Site ID are missing. Configure them in %s.', 'basicrum' ), $settings_link );
+			$message = sprintf( __( 'Basicrum monitoring is enabled but inactive because the Beacon URL and Brum Site ID are missing. Configure them in %s.', 'basicrum-real-user-monitoring' ), $settings_link );
 		} elseif ( in_array( 'beacon_url', $missing_settings, true ) ) {
 			/* translators: %s: Link to the Basicrum settings page. */
-			$message = sprintf( __( 'Basicrum monitoring is enabled but inactive because the Beacon URL is missing. Configure it in %s.', 'basicrum' ), $settings_link );
+			$message = sprintf( __( 'Basicrum monitoring is enabled but inactive because the Beacon URL is missing. Configure it in %s.', 'basicrum-real-user-monitoring' ), $settings_link );
 		} else {
 			/* translators: %s: Link to the Basicrum settings page. */
-			$message = sprintf( __( 'Basicrum monitoring is enabled but inactive because the Brum Site ID is missing. Configure it in %s.', 'basicrum' ), $settings_link );
+			$message = sprintf( __( 'Basicrum monitoring is enabled but inactive because the Brum Site ID is missing. Configure it in %s.', 'basicrum-real-user-monitoring' ), $settings_link );
 		}
 
 		add_settings_error(
@@ -838,7 +840,7 @@ class Page {
 		printf(
 			'<p><strong>v%s</strong> <span class="description">(%s)</span></p>',
 			esc_html( $version ),
-			esc_html__( '~30 KB gzipped', 'basicrum' )
+			esc_html__( '~30 KB gzipped', 'basicrum-real-user-monitoring' )
 		);
 	}
 
@@ -881,49 +883,49 @@ class Page {
 
 		$integrations = array(
 			'borlabs-cookie-v3' => array(
-				'label'       => __( 'Borlabs Cookie v3', 'basicrum' ),
-				'description' => __( 'The manual adapter supports Borlabs Cookie 3.0.6 or newer. Automatic detection requires 3.2 or newer because it uses the public borlabsCookieApi() marker. Create and enable a Borlabs service with the ID basicrum, normally in the Statistics service group. Add this adapter as unblocked site code that runs on every page.', 'basicrum' ),
+				'label'       => __( 'Borlabs Cookie v3', 'basicrum-real-user-monitoring' ),
+				'description' => __( 'The manual adapter supports Borlabs Cookie 3.0.6 or newer. Automatic detection requires 3.2 or newer because it uses the public borlabsCookieApi() marker. Create and enable a Borlabs service with the ID basicrum, normally in the Statistics service group. Add this adapter as unblocked site code that runs on every page.', 'basicrum-real-user-monitoring' ),
 				'snippets'    => array(
 					array(
-						'label' => __( 'Borlabs Cookie adapter', 'basicrum' ),
+						'label' => __( 'Borlabs Cookie adapter', 'basicrum-real-user-monitoring' ),
 						'path'  => 'js/integrations/borlabs-cookie-v3.js',
 						'rows'  => 18,
 					),
 				),
 			),
 			'wp-consent-api'    => array(
-				'label'       => __( 'WP Consent API', 'basicrum' ),
-				'description' => __( 'Install and activate the standalone WP Consent API plugin, then use this shared adapter with a consent tool such as Complianz or CookieYes that publishes its Statistics decision through the API. Complianz does not include WP Consent API by itself.', 'basicrum' ),
+				'label'       => __( 'WP Consent API', 'basicrum-real-user-monitoring' ),
+				'description' => __( 'Install and activate the standalone WP Consent API plugin, then use this shared adapter with a consent tool such as Complianz or CookieYes that publishes its Statistics decision through the API. Complianz does not include WP Consent API by itself.', 'basicrum-real-user-monitoring' ),
 				'snippets'    => array(
 					array(
-						'label' => __( 'WP Consent API adapter', 'basicrum' ),
+						'label' => __( 'WP Consent API adapter', 'basicrum-real-user-monitoring' ),
 						'path'  => 'js/integrations/wp-consent-api.js',
 						'rows'  => 18,
 					),
 				),
 			),
 			'cookieyes'         => array(
-				'label'       => __( 'CookieYes', 'basicrum' ),
-				'description' => __( 'Use this direct adapter only for a connected modern CookieYes 3.x installation when WP Consent API is not active. CookieYes legacy mode uses an incompatible browser API and is deliberately not detected. The adapter follows the Analytics category and fails closed when the browser API is unavailable.', 'basicrum' ),
+				'label'       => __( 'CookieYes', 'basicrum-real-user-monitoring' ),
+				'description' => __( 'Use this direct adapter only for a connected modern CookieYes 3.x installation when WP Consent API is not active. CookieYes legacy mode uses an incompatible browser API and is deliberately not detected. The adapter follows the Analytics category and fails closed when the browser API is unavailable.', 'basicrum-real-user-monitoring' ),
 				'snippets'    => array(
 					array(
-						'label' => __( 'CookieYes adapter', 'basicrum' ),
+						'label' => __( 'CookieYes adapter', 'basicrum-real-user-monitoring' ),
 						'path'  => 'js/integrations/cookieyes.js',
 						'rows'  => 18,
 					),
 				),
 			),
 			'generic'           => array(
-				'label'       => __( 'Generic', 'basicrum' ),
-				'description' => __( 'Use these separate snippets when your consent tool provides custom callbacks for an allow decision and a deny, expiry, or withdrawal decision.', 'basicrum' ),
+				'label'       => __( 'Generic', 'basicrum-real-user-monitoring' ),
+				'description' => __( 'Use these separate snippets when your consent tool provides custom callbacks for an allow decision and a deny, expiry, or withdrawal decision.', 'basicrum-real-user-monitoring' ),
 				'snippets'    => array(
 					array(
-						'label' => __( 'Allow or grant callback', 'basicrum' ),
+						'label' => __( 'Allow or grant callback', 'basicrum-real-user-monitoring' ),
 						'path'  => 'js/integrations/generic-opt-in.js',
 						'rows'  => 9,
 					),
 					array(
-						'label' => __( 'Deny, expiry, or withdrawal callback', 'basicrum' ),
+						'label' => __( 'Deny, expiry, or withdrawal callback', 'basicrum-real-user-monitoring' ),
 						'path'  => 'js/integrations/generic-opt-out.js',
 						'rows'  => 9,
 					),
@@ -933,8 +935,8 @@ class Page {
 		?>
 		<div
 			class="basicrum-consent-mode-panels"
-			data-automatic-announcement="<?php esc_attr_e( 'Automatic connection details shown.', 'basicrum' ); ?>"
-			data-manual-announcement="<?php esc_attr_e( 'Manual connection setup shown. Save Changes to apply this mode.', 'basicrum' ); ?>"
+			data-automatic-announcement="<?php esc_attr_e( 'Automatic connection details shown.', 'basicrum-real-user-monitoring' ); ?>"
+			data-manual-announcement="<?php esc_attr_e( 'Manual connection setup shown. Save Changes to apply this mode.', 'basicrum-real-user-monitoring' ); ?>"
 		>
 			<span class="screen-reader-text basicrum-consent-mode-announcement" aria-live="polite"></span>
 
@@ -946,11 +948,11 @@ class Page {
 				aria-labelledby="basicrum-consent-automatic-heading"
 				<?php echo $is_automatic ? '' : ' hidden'; ?>
 			>
-				<h3 id="basicrum-consent-automatic-heading"><?php esc_html_e( 'Automatic Connection Status', 'basicrum' ); ?></h3>
+				<h3 id="basicrum-consent-automatic-heading"><?php esc_html_e( 'Automatic Connection Status', 'basicrum-real-user-monitoring' ); ?></h3>
 				<?php $this->render_automatic_consent_integration_status( $automatic_status ); ?>
 				<?php $this->render_detected_consent_integrations( $detected_integrations, $automatic_integration ); ?>
 				<?php $this->render_consent_integration_diagnostics( $settings, $detected_integrations, $automatic_integration, $automatic_status ); ?>
-				<p><?php esc_html_e( 'Your consent tool remains responsible for collecting and reporting the visitor decision. Automatic connection does not configure consent categories or make the site compliant by itself.', 'basicrum' ); ?></p>
+				<p><?php esc_html_e( 'Your consent tool remains responsible for collecting and reporting the visitor decision. Automatic connection does not configure consent categories or make the site compliant by itself.', 'basicrum-real-user-monitoring' ); ?></p>
 			</section>
 
 			<section
@@ -961,17 +963,17 @@ class Page {
 				aria-labelledby="basicrum-consent-manual-heading"
 				<?php echo $is_automatic ? ' hidden' : ''; ?>
 			>
-				<h3 id="basicrum-consent-manual-heading"><?php esc_html_e( 'Manual Connection Setup', 'basicrum' ); ?></h3>
-				<div class="notice notice-info inline basicrum-consent-status"><p><strong><?php esc_html_e( 'Manual callbacks are selected. Basicrum will not load a provider adapter automatically.', 'basicrum' ); ?></strong></p></div>
-				<p><?php esc_html_e( 'Use one matching integration below in your consent or cookie tool. Load it on every page after the Basicrum consent loader.', 'basicrum' ); ?></p>
-				<p><code>window.OPT_IN_BASICRUM_LOADER_WRAPPER()</code> - <?php esc_html_e( 'Call when the external tool reports that performance monitoring is allowed. This executes the standard Boomerang loader.', 'basicrum' ); ?></p>
-				<p><code>window.OPT_OUT_BASICRUM_LOADER_WRAPPER()</code> - <?php esc_html_e( 'Call when the external tool reports that monitoring is denied or that permission has expired or been withdrawn. Basicrum disables loaded collection and attempts to remove the Boomerang RT and BA cookies, but it cannot retract data already sent.', 'basicrum' ); ?></p>
-				<p><?php esc_html_e( 'The callbacks are registered at the configured Script Position. Load the manual integration after that point; calls made before registration are not replayed.', 'basicrum' ); ?></p>
-				<p><?php esc_html_e( 'Basicrum does not persist consent across page loads or in its own cookie or server-side record, and it does not display a consent popup. Your consent tool remains the source of truth. A region-aware tool may report allowed before visitor interaction in an opt-out region. If consent is withdrawn after Boomerang loading starts, reload the page before granting it again.', 'basicrum' ); ?></p>
-				<p><?php esc_html_e( 'The files below are the same tested adapters included with Basicrum. They do not configure your consent categories or replace legal review.', 'basicrum' ); ?></p>
+				<h3 id="basicrum-consent-manual-heading"><?php esc_html_e( 'Manual Connection Setup', 'basicrum-real-user-monitoring' ); ?></h3>
+				<div class="notice notice-info inline basicrum-consent-status"><p><strong><?php esc_html_e( 'Manual callbacks are selected. Basicrum will not load a provider adapter automatically.', 'basicrum-real-user-monitoring' ); ?></strong></p></div>
+				<p><?php esc_html_e( 'Use one matching integration below in your consent or cookie tool. Load it on every page after the Basicrum consent loader.', 'basicrum-real-user-monitoring' ); ?></p>
+				<p><code>window.OPT_IN_BASICRUM_LOADER_WRAPPER()</code> - <?php esc_html_e( 'Call when the external tool reports that performance monitoring is allowed. This executes the standard Boomerang loader.', 'basicrum-real-user-monitoring' ); ?></p>
+				<p><code>window.OPT_OUT_BASICRUM_LOADER_WRAPPER()</code> - <?php esc_html_e( 'Call when the external tool reports that monitoring is denied or that permission has expired or been withdrawn. Basicrum disables loaded collection and attempts to remove the Boomerang RT and BA cookies, but it cannot retract data already sent.', 'basicrum-real-user-monitoring' ); ?></p>
+				<p><?php esc_html_e( 'The callbacks are registered at the configured Script Position. Load the manual integration after that point; calls made before registration are not replayed.', 'basicrum-real-user-monitoring' ); ?></p>
+				<p><?php esc_html_e( 'Basicrum does not persist consent across page loads or in its own cookie or server-side record, and it does not display a consent popup. Your consent tool remains the source of truth. A region-aware tool may report allowed before visitor interaction in an opt-out region. If consent is withdrawn after Boomerang loading starts, reload the page before granting it again.', 'basicrum-real-user-monitoring' ); ?></p>
+				<p><?php esc_html_e( 'The files below are the same tested adapters included with Basicrum. They do not configure your consent categories or replace legal review.', 'basicrum-real-user-monitoring' ); ?></p>
 
 				<div class="basicrum-consent-tabs">
-					<div class="nav-tab-wrapper" role="tablist" aria-label="<?php esc_attr_e( 'Consent tool integrations', 'basicrum' ); ?>">
+					<div class="nav-tab-wrapper" role="tablist" aria-label="<?php esc_attr_e( 'Consent tool integrations', 'basicrum-real-user-monitoring' ); ?>">
 						<?php foreach ( $integrations as $integration_id => $integration ) : ?>
 							<?php $tab_id = 'basicrum-consent-tab-' . $integration_id; ?>
 							<?php $is_active_tab = $active_integration === $integration_id; ?>
@@ -1020,79 +1022,79 @@ class Page {
 	private function get_automatic_consent_integration_status( $settings, $automatic_integration, $detected_integrations ) {
 		if ( '1' !== $settings['enabled'] ) {
 			return array(
-				'tier'        => __( 'Off', 'basicrum' ),
+				'tier'        => __( 'Off', 'basicrum-real-user-monitoring' ),
 				'tier_class'  => 'is-off',
 				'notice_type' => 'info',
-				'verdict'     => __( 'Automatic connection is not running', 'basicrum' ),
-				'cause'       => __( 'Basicrum monitoring is disabled, so no consent adapter is enqueued.', 'basicrum' ),
-				'action'      => __( 'Enable Basicrum monitoring before checking the consent tool connection.', 'basicrum' ),
+				'verdict'     => __( 'Automatic connection is not running', 'basicrum-real-user-monitoring' ),
+				'cause'       => __( 'Basicrum monitoring is disabled, so no consent adapter is enqueued.', 'basicrum-real-user-monitoring' ),
+				'action'      => __( 'Enable Basicrum monitoring before checking the consent tool connection.', 'basicrum-real-user-monitoring' ),
 				'action_type' => '',
 				'manual_tab'  => '',
 				'checklist'   => array(),
 			);
 		} elseif ( '1' !== $settings['consent_enabled'] ) {
 			return array(
-				'tier'        => __( 'Off', 'basicrum' ),
+				'tier'        => __( 'Off', 'basicrum-real-user-monitoring' ),
 				'tier_class'  => 'is-off',
 				'notice_type' => 'info',
-				'verdict'     => __( 'Consent tool connection is not used', 'basicrum' ),
-				'cause'       => __( 'Visitor Consent is set to Monitor without consent, so Basicrum does not wait for a consent-tool decision.', 'basicrum' ),
-				'action'      => __( 'Select Require consent before monitoring if Basicrum should wait for a reported decision.', 'basicrum' ),
+				'verdict'     => __( 'Consent tool connection is not used', 'basicrum-real-user-monitoring' ),
+				'cause'       => __( 'Visitor Consent is set to Monitor without consent, so Basicrum does not wait for a consent-tool decision.', 'basicrum-real-user-monitoring' ),
+				'action'      => __( 'Select Require consent before monitoring if Basicrum should wait for a reported decision.', 'basicrum-real-user-monitoring' ),
 				'action_type' => '',
 				'manual_tab'  => '',
 				'checklist'   => array(),
 			);
 		} elseif ( ConsentIntegration::WP_CONSENT_API === $automatic_integration ) {
 			return array(
-				'tier'        => __( 'Active', 'basicrum' ),
+				'tier'        => __( 'Active', 'basicrum-real-user-monitoring' ),
 				'tier_class'  => 'is-active',
 				'notice_type' => 'success',
-				'verdict'     => __( 'WP Consent API selected', 'basicrum' ),
-				'cause'       => __( 'Basicrum will load its packaged WP Consent API adapter and follow the Statistics decision. This shared API takes priority over direct provider adapters.', 'basicrum' ),
-				'action'      => __( 'Confirm that your consent popup publishes Statistics decisions to WP Consent API, then test both allow and deny in a private window.', 'basicrum' ),
+				'verdict'     => __( 'WP Consent API selected', 'basicrum-real-user-monitoring' ),
+				'cause'       => __( 'Basicrum will load its packaged WP Consent API adapter and follow the Statistics decision. This shared API takes priority over direct provider adapters.', 'basicrum-real-user-monitoring' ),
+				'action'      => __( 'Confirm that your consent popup publishes Statistics decisions to WP Consent API, then test both allow and deny in a private window.', 'basicrum-real-user-monitoring' ),
 				'action_type' => '',
 				'manual_tab'  => '',
 				'checklist'   => array(),
 			);
 		} elseif ( ConsentIntegration::BORLABS_COOKIE === $automatic_integration ) {
 			return array(
-				'tier'        => __( 'Action needed', 'basicrum' ),
+				'tier'        => __( 'Action needed', 'basicrum-real-user-monitoring' ),
 				'tier_class'  => 'is-action-needed',
 				'notice_type' => 'warning',
-				'verdict'     => __( 'Borlabs Cookie selected', 'basicrum' ),
-				'cause'       => __( 'Basicrum detected the public Borlabs Cookie 3.2+ PHP API and will load its packaged adapter.', 'basicrum' ),
-				'action'      => __( 'Create and enable the Borlabs service with the ID basicrum in the Statistics service group, then re-check and test both decisions in a private window.', 'basicrum' ),
+				'verdict'     => __( 'Borlabs Cookie selected', 'basicrum-real-user-monitoring' ),
+				'cause'       => __( 'Basicrum detected the public Borlabs Cookie 3.2+ PHP API and will load its packaged adapter.', 'basicrum-real-user-monitoring' ),
+				'action'      => __( 'Create and enable the Borlabs service with the ID basicrum in the Statistics service group, then re-check and test both decisions in a private window.', 'basicrum-real-user-monitoring' ),
 				'action_type' => 'recheck',
 				'manual_tab'  => '',
 				'checklist'   => array(
 					array(
 						'state' => 'done',
-						'text'  => __( 'Packaged Basicrum adapter selected', 'basicrum' ),
+						'text'  => __( 'Packaged Basicrum adapter selected', 'basicrum-real-user-monitoring' ),
 					),
 					array(
 						'state' => 'verify',
-						'text'  => __( 'Borlabs service basicrum enabled in the Statistics group', 'basicrum' ),
+						'text'  => __( 'Borlabs service basicrum enabled in the Statistics group', 'basicrum-real-user-monitoring' ),
 					),
 				),
 			);
 		} elseif ( ConsentIntegration::COOKIEYES === $automatic_integration ) {
 			return array(
-				'tier'        => __( 'Action needed', 'basicrum' ),
+				'tier'        => __( 'Action needed', 'basicrum-real-user-monitoring' ),
 				'tier_class'  => 'is-action-needed',
 				'notice_type' => 'warning',
-				'verdict'     => __( 'CookieYes selected', 'basicrum' ),
-				'cause'       => __( 'Basicrum detected the modern CookieYes 3.x runtime and will load its packaged direct adapter. The adapter remains blocked if the connected CookieYes browser API is unavailable.', 'basicrum' ),
-				'action'      => __( 'Confirm that CookieYes exposes Analytics consent on the frontend, then re-check and test both decisions in a private window. Prefer WP Consent API when it is available.', 'basicrum' ),
+				'verdict'     => __( 'CookieYes selected', 'basicrum-real-user-monitoring' ),
+				'cause'       => __( 'Basicrum detected the modern CookieYes 3.x runtime and will load its packaged direct adapter. The adapter remains blocked if the connected CookieYes browser API is unavailable.', 'basicrum-real-user-monitoring' ),
+				'action'      => __( 'Confirm that CookieYes exposes Analytics consent on the frontend, then re-check and test both decisions in a private window. Prefer WP Consent API when it is available.', 'basicrum-real-user-monitoring' ),
 				'action_type' => 'recheck',
 				'manual_tab'  => '',
 				'checklist'   => array(
 					array(
 						'state' => 'done',
-						'text'  => __( 'Packaged Basicrum adapter selected', 'basicrum' ),
+						'text'  => __( 'Packaged Basicrum adapter selected', 'basicrum-real-user-monitoring' ),
 					),
 					array(
 						'state' => 'verify',
-						'text'  => __( 'CookieYes Analytics consent available through the connected browser API', 'basicrum' ),
+						'text'  => __( 'CookieYes Analytics consent available through the connected browser API', 'basicrum-real-user-monitoring' ),
 					),
 				),
 			);
@@ -1110,15 +1112,15 @@ class Page {
 			}
 
 			/* translators: %s: Comma-separated consent provider names. */
-			$cause = sprintf( __( 'Basicrum detected multiple direct providers: %s. It did not guess which provider controls monitoring, so no adapter is loaded.', 'basicrum' ), implode( ', ', $direct_names ) );
+			$cause = sprintf( __( 'Basicrum detected multiple direct providers: %s. It did not guess which provider controls monitoring, so no adapter is loaded.', 'basicrum-real-user-monitoring' ), implode( ', ', $direct_names ) );
 
 			return array(
-				'tier'        => __( 'Blocked', 'basicrum' ),
+				'tier'        => __( 'Blocked', 'basicrum-real-user-monitoring' ),
 				'tier_class'  => 'is-blocked',
 				'notice_type' => 'error',
-				'verdict'     => __( 'Multiple direct providers detected', 'basicrum' ),
+				'verdict'     => __( 'Multiple direct providers detected', 'basicrum-real-user-monitoring' ),
 				'cause'       => $cause,
-				'action'      => __( 'Choose Manual callbacks and select the provider that controls Basicrum, or keep only that provider active.', 'basicrum' ),
+				'action'      => __( 'Choose Manual callbacks and select the provider that controls Basicrum, or keep only that provider active.', 'basicrum-real-user-monitoring' ),
 				'action_type' => 'manual',
 				'manual_tab'  => '',
 				'checklist'   => array(),
@@ -1126,12 +1128,12 @@ class Page {
 		}
 
 		return array(
-			'tier'        => __( 'Blocked', 'basicrum' ),
+			'tier'        => __( 'Blocked', 'basicrum-real-user-monitoring' ),
 			'tier_class'  => 'is-blocked',
 			'notice_type' => 'error',
-			'verdict'     => __( 'No supported provider detected', 'basicrum' ),
-			'cause'       => __( 'Basicrum did not find WP Consent API, Borlabs Cookie, or CookieYes. No automatic adapter is loaded and monitoring remains blocked.', 'basicrum' ),
-			'action'      => __( 'If you use Complianz, install and activate the standalone WP Consent API plugin. Otherwise use Manual callbacks to connect an unsupported or custom consent tool.', 'basicrum' ),
+			'verdict'     => __( 'No supported provider detected', 'basicrum-real-user-monitoring' ),
+			'cause'       => __( 'Basicrum did not find WP Consent API, Borlabs Cookie, or CookieYes. No automatic adapter is loaded and monitoring remains blocked.', 'basicrum-real-user-monitoring' ),
+			'action'      => __( 'If you use Complianz, install and activate the standalone WP Consent API plugin. Otherwise use Manual callbacks to connect an unsupported or custom consent tool.', 'basicrum-real-user-monitoring' ),
 			'action_type' => 'manual',
 			'manual_tab'  => 'generic',
 			'checklist'   => array(),
@@ -1162,32 +1164,32 @@ class Page {
 					esc_attr( $item['state'] ),
 					esc_attr( 'done' === $item['state'] ? 'dashicons-yes-alt' : 'dashicons-search' ),
 					esc_html( $item['text'] ),
-					esc_html( 'done' === $item['state'] ? __( 'Done', 'basicrum' ) : __( 'Verify', 'basicrum' ) )
+					esc_html( 'done' === $item['state'] ? __( 'Done', 'basicrum-real-user-monitoring' ) : __( 'Verify', 'basicrum-real-user-monitoring' ) )
 				);
 			}
 			echo '</ul>';
 		}
 
-		printf( '<p class="basicrum-consent-next-action"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Next:', 'basicrum' ), esc_html( $status['action'] ) );
+		printf( '<p class="basicrum-consent-next-action"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Next:', 'basicrum-real-user-monitoring' ), esc_html( $status['action'] ) );
 
 		if ( 'manual' === $status['action_type'] ) {
 			echo '<p class="basicrum-consent-actions">';
 			printf(
 				'<button type="button" class="button basicrum-open-manual-consent"%1$s>%2$s</button>',
 				$status['manual_tab'] ? ' data-basicrum-manual-tab="' . esc_attr( $status['manual_tab'] ) . '"' : '',
-				esc_html__( 'Open manual setup', 'basicrum' )
+				esc_html__( 'Open manual setup', 'basicrum-real-user-monitoring' )
 			);
 			printf(
 				' <a class="button" href="%1$s">%2$s</a>',
 				esc_url( admin_url( 'admin.php?page=' . self::SLUG ) ),
-				esc_html__( 'Re-check detection', 'basicrum' )
+				esc_html__( 'Re-check detection', 'basicrum-real-user-monitoring' )
 			);
 			echo '</p>';
 		} elseif ( 'recheck' === $status['action_type'] ) {
 			printf(
 				'<p><a class="button" href="%1$s">%2$s</a></p>',
 				esc_url( admin_url( 'admin.php?page=' . self::SLUG ) ),
-				esc_html__( 'Re-check detection', 'basicrum' )
+				esc_html__( 'Re-check detection', 'basicrum-real-user-monitoring' )
 			);
 		}
 
@@ -1205,7 +1207,7 @@ class Page {
 		$provider_labels = $this->get_consent_integration_labels();
 		?>
 		<div class="basicrum-consent-detection">
-			<h4><?php esc_html_e( 'Provider detection', 'basicrum' ); ?></h4>
+			<h4><?php esc_html_e( 'Provider detection', 'basicrum-real-user-monitoring' ); ?></h4>
 			<ul>
 				<?php foreach ( $provider_labels as $integration => $provider_label ) : ?>
 					<?php
@@ -1213,16 +1215,16 @@ class Page {
 					$is_selected = $automatic_integration === $integration;
 
 					if ( $is_selected && ConsentIntegration::WP_CONSENT_API === $integration ) {
-						$state_label = __( 'Selected - priority', 'basicrum' );
+						$state_label = __( 'Selected - priority', 'basicrum-real-user-monitoring' );
 						$state_class = 'is-selected';
 					} elseif ( $is_selected ) {
-						$state_label = __( 'Selected', 'basicrum' );
+						$state_label = __( 'Selected', 'basicrum-real-user-monitoring' );
 						$state_class = 'is-selected';
 					} elseif ( $is_detected ) {
-						$state_label = __( 'Detected', 'basicrum' );
+						$state_label = __( 'Detected', 'basicrum-real-user-monitoring' );
 						$state_class = 'is-detected';
 					} else {
-						$state_label = __( 'Not detected', 'basicrum' );
+						$state_label = __( 'Not detected', 'basicrum-real-user-monitoring' );
 						$state_class = 'is-not-detected';
 					}
 					?>
@@ -1255,41 +1257,41 @@ class Page {
 			}
 		}
 
-		$none_label              = __( 'None', 'basicrum' );
+		$none_label              = __( 'None', 'basicrum-real-user-monitoring' );
 		$detected_provider_names = $detected_names ? implode( ', ', $detected_names ) : $none_label;
 		$selected_provider_name  = $automatic_integration && isset( $provider_labels[ $automatic_integration ] ) ? $provider_labels[ $automatic_integration ] : $none_label;
 		$diagnostics             = array(
 			/* translators: %s: Basicrum plugin version. */
-			sprintf( __( 'Basicrum version: %s', 'basicrum' ), BASICRUM_VERSION ),
+			sprintf( __( 'Basicrum version: %s', 'basicrum-real-user-monitoring' ), BASICRUM_VERSION ),
 			/* translators: %s: Consent tool connection mode. */
-			sprintf( __( 'Connection mode: %s', 'basicrum' ), __( 'Automatic', 'basicrum' ) ),
+			sprintf( __( 'Connection mode: %s', 'basicrum-real-user-monitoring' ), __( 'Automatic', 'basicrum-real-user-monitoring' ) ),
 			/* translators: %s: Enabled or disabled. */
-			sprintf( __( 'Monitoring: %s', 'basicrum' ), '1' === $settings['enabled'] ? __( 'Enabled', 'basicrum' ) : __( 'Disabled', 'basicrum' ) ),
+			sprintf( __( 'Monitoring: %s', 'basicrum-real-user-monitoring' ), '1' === $settings['enabled'] ? __( 'Enabled', 'basicrum-real-user-monitoring' ) : __( 'Disabled', 'basicrum-real-user-monitoring' ) ),
 			/* translators: %s: Visitor consent requirement. */
-			sprintf( __( 'Visitor consent: %s', 'basicrum' ), '1' === $settings['consent_enabled'] ? __( 'Required before monitoring', 'basicrum' ) : __( 'Not required', 'basicrum' ) ),
+			sprintf( __( 'Visitor consent: %s', 'basicrum-real-user-monitoring' ), '1' === $settings['consent_enabled'] ? __( 'Required before monitoring', 'basicrum-real-user-monitoring' ) : __( 'Not required', 'basicrum-real-user-monitoring' ) ),
 			/* translators: %s: Comma-separated consent provider names. */
-			sprintf( __( 'Detected providers: %s', 'basicrum' ), $detected_provider_names ),
+			sprintf( __( 'Detected providers: %s', 'basicrum-real-user-monitoring' ), $detected_provider_names ),
 			/* translators: %s: Selected consent provider name. */
-			sprintf( __( 'Selected provider: %s', 'basicrum' ), $selected_provider_name ),
+			sprintf( __( 'Selected provider: %s', 'basicrum-real-user-monitoring' ), $selected_provider_name ),
 			/* translators: 1: Status tier. 2: Status verdict. */
-			sprintf( __( 'Result: %1$s - %2$s', 'basicrum' ), $status['tier'], $status['verdict'] ),
+			sprintf( __( 'Result: %1$s - %2$s', 'basicrum-real-user-monitoring' ), $status['tier'], $status['verdict'] ),
 		);
 		$diagnostic_id           = 'basicrum-consent-integration-diagnostics';
 		?>
 		<details class="basicrum-consent-diagnostics">
-			<summary><?php esc_html_e( 'Connection diagnostics', 'basicrum' ); ?></summary>
-			<label class="screen-reader-text" for="<?php echo esc_attr( $diagnostic_id ); ?>"><?php esc_html_e( 'Basicrum consent tool connection diagnostics', 'basicrum' ); ?></label>
+			<summary><?php esc_html_e( 'Connection diagnostics', 'basicrum-real-user-monitoring' ); ?></summary>
+			<label class="screen-reader-text" for="<?php echo esc_attr( $diagnostic_id ); ?>"><?php esc_html_e( 'Basicrum consent tool connection diagnostics', 'basicrum-real-user-monitoring' ); ?></label>
 			<textarea id="<?php echo esc_attr( $diagnostic_id ); ?>" class="large-text code" rows="7" readonly="readonly" spellcheck="false"><?php echo esc_textarea( implode( "\n", $diagnostics ) ); ?></textarea>
-			<p class="description"><?php esc_html_e( 'This status contains no Beacon URL or Brum Site ID.', 'basicrum' ); ?></p>
+			<p class="description"><?php esc_html_e( 'This status contains no Beacon URL or Brum Site ID.', 'basicrum-real-user-monitoring' ); ?></p>
 			<p class="basicrum-consent-snippet-actions">
 				<button
 					type="button"
 					class="button basicrum-copy-text"
 					data-copy-target="<?php echo esc_attr( $diagnostic_id ); ?>"
-					data-copied-label="<?php esc_attr_e( 'Copied', 'basicrum' ); ?>"
-					data-copy-fallback-label="<?php esc_attr_e( 'Press Ctrl+C or Command+C to copy.', 'basicrum' ); ?>"
+					data-copied-label="<?php esc_attr_e( 'Copied', 'basicrum-real-user-monitoring' ); ?>"
+					data-copy-fallback-label="<?php esc_attr_e( 'Press Ctrl+C or Command+C to copy.', 'basicrum-real-user-monitoring' ); ?>"
 				>
-					<?php esc_html_e( 'Copy connection status', 'basicrum' ); ?>
+					<?php esc_html_e( 'Copy connection status', 'basicrum-real-user-monitoring' ); ?>
 				</button>
 				<span class="basicrum-copy-status" aria-live="polite"></span>
 			</p>
@@ -1304,9 +1306,9 @@ class Page {
 	 */
 	private function get_consent_integration_labels() {
 		return array(
-			ConsentIntegration::WP_CONSENT_API => __( 'WP Consent API', 'basicrum' ),
-			ConsentIntegration::BORLABS_COOKIE => __( 'Borlabs Cookie', 'basicrum' ),
-			ConsentIntegration::COOKIEYES      => __( 'CookieYes', 'basicrum' ),
+			ConsentIntegration::WP_CONSENT_API => __( 'WP Consent API', 'basicrum-real-user-monitoring' ),
+			ConsentIntegration::BORLABS_COOKIE => __( 'Borlabs Cookie', 'basicrum-real-user-monitoring' ),
+			ConsentIntegration::COOKIEYES      => __( 'CookieYes', 'basicrum-real-user-monitoring' ),
 		);
 	}
 
@@ -1326,7 +1328,7 @@ class Page {
 		<div class="basicrum-consent-snippet">
 			<label for="<?php echo esc_attr( $snippet_id ); ?>"><strong><?php echo esc_html( $snippet['label'] ); ?></strong></label>
 			<?php if ( false === $snippet_code ) : ?>
-				<p class="notice notice-error inline"><?php esc_html_e( 'This integration snippet is unavailable. Reinstall Basicrum from a complete release package.', 'basicrum' ); ?></p>
+				<p class="notice notice-error inline"><?php esc_html_e( 'This integration snippet is unavailable. Reinstall Basicrum from a complete release package.', 'basicrum-real-user-monitoring' ); ?></p>
 			<?php else : ?>
 				<textarea
 					id="<?php echo esc_attr( $snippet_id ); ?>"
@@ -1341,10 +1343,10 @@ class Page {
 						type="button"
 						class="button basicrum-copy-text basicrum-copy-consent-snippet"
 						data-copy-target="<?php echo esc_attr( $snippet_id ); ?>"
-						data-copied-label="<?php esc_attr_e( 'Copied', 'basicrum' ); ?>"
-						data-copy-fallback-label="<?php esc_attr_e( 'Press Ctrl+C or Command+C to copy.', 'basicrum' ); ?>"
+						data-copied-label="<?php esc_attr_e( 'Copied', 'basicrum-real-user-monitoring' ); ?>"
+						data-copy-fallback-label="<?php esc_attr_e( 'Press Ctrl+C or Command+C to copy.', 'basicrum-real-user-monitoring' ); ?>"
 					>
-						<?php esc_html_e( 'Copy snippet', 'basicrum' ); ?>
+						<?php esc_html_e( 'Copy snippet', 'basicrum-real-user-monitoring' ); ?>
 					</button>
 					<span class="basicrum-copy-status" aria-live="polite"></span>
 				</p>

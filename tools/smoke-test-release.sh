@@ -3,7 +3,7 @@
 set -eu
 
 if [ "$#" -ne 1 ]; then
-	printf '%s\n' "Usage: $0 /path/to/basicrum.zip" >&2
+	printf '%s\n' "Usage: $0 /path/to/basicrum-real-user-monitoring.zip" >&2
 	exit 1
 fi
 
@@ -76,7 +76,7 @@ compose run --rm wpcli wp core install \
 	--admin_email=admin@example.test \
 	--skip-email
 
-compose run --rm wpcli wp plugin install /artifacts/basicrum.zip --activate
+compose run --rm wpcli wp plugin install /artifacts/basicrum-real-user-monitoring.zip --activate
 compose run --rm wpcli wp option update basicrum_settings '{"enabled":"1","development_mode":"0","beacon_url":"https://example.test/beacon","brum_site_id":"550e8400-e29b-41d4-a716-446655440000","track_admins":"0","consent_enabled":"0","strip_query_string":"0","wait_after_onload":"0","delay_ms":0,"script_position":"footer","use_unminified_loaders":"0"}' --format=json
 
 curl -fsS "$SITE_URL/" -o "$FRONTEND_RESPONSE"

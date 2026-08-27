@@ -32,6 +32,6 @@ if ! wp core is-installed --path="${WP_PATH}"; then
 		--skip-email
 fi
 
-if ! wp plugin is-active basicrum --path="${WP_PATH}"; then
-	wp plugin activate basicrum --path="${WP_PATH}"
+if ! wp plugin is-active basicrum-real-user-monitoring --path="${WP_PATH}"; then
+	wp plugin activate basicrum-real-user-monitoring --path="${WP_PATH}"
 fi

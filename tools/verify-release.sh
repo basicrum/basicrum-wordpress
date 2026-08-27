@@ -3,7 +3,7 @@
 set -eu
 
 if [ "$#" -ne 1 ]; then
-	printf '%s\n' "Usage: $0 /path/to/basicrum.zip" >&2
+	printf '%s\n' "Usage: $0 /path/to/basicrum-real-user-monitoring.zip" >&2
 	exit 1
 fi
 
@@ -23,6 +23,12 @@ ARCHIVE_DIR=$(CDPATH= cd -- "$(dirname -- "$ARCHIVE_INPUT")" && pwd)
 ARCHIVE_NAME=$(basename -- "$ARCHIVE_INPUT")
 ARCHIVE_PATH="$ARCHIVE_DIR/$ARCHIVE_NAME"
 ARCHIVE_ENTRIES=$(unzip -Z1 "$ARCHIVE_PATH")
+PLUGIN_SLUG=basicrum-real-user-monitoring
+
+if [ "$ARCHIVE_NAME" != "${PLUGIN_SLUG}.zip" ]; then
+	printf '%s\n' "Release archive must be named ${PLUGIN_SLUG}.zip." >&2
+	exit 1
+fi
 
 unzip -tq "$ARCHIVE_PATH" >/dev/null
 
@@ -33,97 +39,97 @@ require_entry() {
 	fi
 }
 
-require_entry 'basicrum/basicrum.php'
-require_entry 'basicrum/uninstall.php'
-require_entry 'basicrum/readme.txt'
-require_entry 'basicrum/LICENSE.md'
-require_entry 'basicrum/THIRD-PARTY-NOTICES.txt'
-require_entry 'basicrum/composer.json'
-require_entry 'basicrum/src/Plugin.php'
-require_entry 'basicrum/src/Assets.php'
-require_entry 'basicrum/src/ConsentIntegration.php'
-require_entry 'basicrum/vendor/autoload.php'
-require_entry 'basicrum/vendor/composer/autoload_classmap.php'
-require_entry 'basicrum/vendor/composer/installed.php'
-require_entry 'basicrum/assets/js/boomr/boomerang-1.815.60.cutting-edge.min.js'
-require_entry 'basicrum/assets/js/boomr/LICENSE.txt'
-require_entry 'basicrum/assets/js/loaders/boomerang-loader-v15.min.js'
-require_entry 'basicrum/assets/js/loaders/consent-boomerang-loader-v1-15.min.js'
-require_entry 'basicrum/assets/js/integrations/borlabs-cookie-v3.js'
-require_entry 'basicrum/assets/js/integrations/wp-consent-api.js'
-require_entry 'basicrum/assets/js/integrations/cookieyes.js'
-require_entry 'basicrum/assets/js/integrations/generic-opt-in.js'
-require_entry 'basicrum/assets/js/integrations/generic-opt-out.js'
-require_entry 'basicrum/assets/images/basicrum-logo.png'
-require_entry 'basicrum/assets/images/basicrum-menu-icon.svg'
-require_entry 'basicrum/languages/basicrum.pot'
+require_entry "$PLUGIN_SLUG/basicrum.php"
+require_entry "$PLUGIN_SLUG/uninstall.php"
+require_entry "$PLUGIN_SLUG/readme.txt"
+require_entry "$PLUGIN_SLUG/LICENSE.md"
+require_entry "$PLUGIN_SLUG/THIRD-PARTY-NOTICES.txt"
+require_entry "$PLUGIN_SLUG/composer.json"
+require_entry "$PLUGIN_SLUG/src/Plugin.php"
+require_entry "$PLUGIN_SLUG/src/Assets.php"
+require_entry "$PLUGIN_SLUG/src/ConsentIntegration.php"
+require_entry "$PLUGIN_SLUG/vendor/autoload.php"
+require_entry "$PLUGIN_SLUG/vendor/composer/autoload_classmap.php"
+require_entry "$PLUGIN_SLUG/vendor/composer/installed.php"
+require_entry "$PLUGIN_SLUG/assets/js/boomr/boomerang-1.815.60.cutting-edge.min.js"
+require_entry "$PLUGIN_SLUG/assets/js/boomr/LICENSE.txt"
+require_entry "$PLUGIN_SLUG/assets/js/loaders/boomerang-loader-v15.min.js"
+require_entry "$PLUGIN_SLUG/assets/js/loaders/consent-boomerang-loader-v1-15.min.js"
+require_entry "$PLUGIN_SLUG/assets/js/integrations/borlabs-cookie-v3.js"
+require_entry "$PLUGIN_SLUG/assets/js/integrations/wp-consent-api.js"
+require_entry "$PLUGIN_SLUG/assets/js/integrations/cookieyes.js"
+require_entry "$PLUGIN_SLUG/assets/js/integrations/generic-opt-in.js"
+require_entry "$PLUGIN_SLUG/assets/js/integrations/generic-opt-out.js"
+require_entry "$PLUGIN_SLUG/assets/images/basicrum-logo.png"
+require_entry "$PLUGIN_SLUG/assets/images/basicrum-menu-icon.svg"
+require_entry "$PLUGIN_SLUG/languages/basicrum-real-user-monitoring.pot"
 
-if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Fqx 'basicrum/assets/js/loaders/consent-api.js'; then
+if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Fqx "$PLUGIN_SLUG/assets/js/loaders/consent-api.js"; then
 	printf '%s\n' 'Release archive contains the retired consent API bridge.' >&2
 	exit 1
 fi
 
-if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Ev '^basicrum(/|$)' | grep -q .; then
-	printf '%s\n' 'Release archive contains files outside the basicrum directory.' >&2
+if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Ev "^${PLUGIN_SLUG}(/|$)" | grep -q .; then
+	printf '%s\n' "Release archive contains files outside the $PLUGIN_SLUG directory." >&2
 	exit 1
 fi
 
-if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq '^basicrum/(tests|\.git|\.github|release)(/|$)'; then
+if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq "^${PLUGIN_SLUG}/(tests|\\.git|\\.github|release)(/|$)"; then
 	printf '%s\n' 'Release archive contains a development directory.' >&2
 	exit 1
 fi
 
-if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq '^basicrum/languages/.*\.(po|mo)$'; then
+if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq "^${PLUGIN_SLUG}/languages/.*\\.(po|mo)$"; then
 	printf '%s\n' 'Release archive contains a bundled locale-specific translation.' >&2
 	exit 1
 fi
 
-if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq '^basicrum/(AGENTS\.md|CLAUDE\.md|CONTRIBUTING\.md|SECURITY\.md|checklist\.md|docs(/|$))'; then
+if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq "^${PLUGIN_SLUG}/(AGENTS\\.md|CLAUDE\\.md|CONTRIBUTING\\.md|SECURITY\\.md|checklist\\.md|docs(/|$))"; then
 	printf '%s\n' 'Release archive contains repository-only documentation.' >&2
 	exit 1
 fi
 
-if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq '^basicrum/vendor/(bin|antecedent|brain|dealerdirect|doctrine|hamcrest|mockery|myclabs|nikic|phar-io|php-parallel-lint|phpcompatibility|phpcsstandards|phpunit|sebastian|squizlabs|theseer|wp-coding-standards|yoast)(/|$)'; then
+if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq "^${PLUGIN_SLUG}/vendor/(bin|antecedent|brain|dealerdirect|doctrine|hamcrest|mockery|myclabs|nikic|phar-io|php-parallel-lint|phpcompatibility|phpcsstandards|phpunit|sebastian|squizlabs|theseer|wp-coding-standards|yoast)(/|$)"; then
 	printf '%s\n' 'Release archive contains a development dependency.' >&2
 	exit 1
 fi
 
-if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq '^basicrum/vendor/.*/\.github(/|$)'; then
+if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq "^${PLUGIN_SLUG}/vendor/.*/\\.github(/|$)"; then
 	printf '%s\n' 'Release archive contains dependency repository metadata.' >&2
 	exit 1
 fi
 
-if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq '^basicrum/vendor/composer/installers(/|$)'; then
+if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq "^${PLUGIN_SLUG}/vendor/composer/installers(/|$)"; then
 	printf '%s\n' 'Release archive contains the Composer installer plugin.' >&2
 	exit 1
 fi
 
-if unzip -p "$ARCHIVE_PATH" basicrum/vendor/composer/autoload_classmap.php | grep -Fq 'Composer\\Installers'; then
+if unzip -p "$ARCHIVE_PATH" "$PLUGIN_SLUG/vendor/composer/autoload_classmap.php" | grep -Fq 'Composer\\Installers'; then
 	printf '%s\n' 'Composer class map references the removed Composer installer plugin.' >&2
 	exit 1
 fi
 
-if ! unzip -p "$ARCHIVE_PATH" basicrum/vendor/composer/autoload_classmap.php | grep -Fq "'Basicrum\\\\WP\\\\Plugin'"; then
+if ! unzip -p "$ARCHIVE_PATH" "$PLUGIN_SLUG/vendor/composer/autoload_classmap.php" | grep -Fq "'Basicrum\\\\WP\\\\Plugin'"; then
 	printf '%s\n' 'Composer class map does not contain the Basicrum plugin classes.' >&2
 	exit 1
 fi
 
-if ! unzip -p "$ARCHIVE_PATH" basicrum/vendor/composer/autoload_classmap.php | grep -Fq "'Basicrum\\\\WP\\\\ConsentIntegration'"; then
+if ! unzip -p "$ARCHIVE_PATH" "$PLUGIN_SLUG/vendor/composer/autoload_classmap.php" | grep -Fq "'Basicrum\\\\WP\\\\ConsentIntegration'"; then
 	printf '%s\n' 'Composer class map does not contain the consent integration service.' >&2
 	exit 1
 fi
 
-if ! unzip -p "$ARCHIVE_PATH" basicrum/assets/js/boomr/LICENSE.txt | grep -Fq 'Copyright (c) 2017-2023, Akamai Technologies, Inc.'; then
+if ! unzip -p "$ARCHIVE_PATH" "$PLUGIN_SLUG/assets/js/boomr/LICENSE.txt" | grep -Fq 'Copyright (c) 2017-2023, Akamai Technologies, Inc.'; then
 	printf '%s\n' 'Bundled Boomerang license text is incomplete.' >&2
 	exit 1
 fi
 
-if ! unzip -p "$ARCHIVE_PATH" basicrum/THIRD-PARTY-NOTICES.txt | grep -Fq 'Boomerang 1.815.60'; then
+if ! unzip -p "$ARCHIVE_PATH" "$PLUGIN_SLUG/THIRD-PARTY-NOTICES.txt" | grep -Fq 'Boomerang 1.815.60'; then
 	printf '%s\n' 'Bundled software notice is incomplete.' >&2
 	exit 1
 fi
 
-if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq '^basicrum/(\.distignore|composer\.lock|package(-lock)?\.json|playwright[^/]*\.config\.(js|cjs|mjs|ts)|patchwork\.json|phpcs\.ruleset\.xml|phpunit[^/]*\.xml|phpstan\.neon\.dist|README\.md|coverage\.xml|\.phpunit\.result\.cache)$'; then
+if printf '%s\n' "$ARCHIVE_ENTRIES" | grep -Eq "^${PLUGIN_SLUG}/(\\.distignore|composer\\.lock|package(-lock)?\\.json|playwright[^/]*\\.config\\.(js|cjs|mjs|ts)|patchwork\\.json|phpcs\\.ruleset\\.xml|phpunit[^/]*\\.xml|phpstan\\.neon\\.dist|README\\.md|coverage\\.xml|\\.phpunit\\.result\\.cache)$"; then
 	printf '%s\n' 'Release archive contains a development file.' >&2
 	exit 1
 fi

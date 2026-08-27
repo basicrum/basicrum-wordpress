@@ -45,7 +45,7 @@ jobs:
         run: sh tools/build-release.sh
 
       - name: Install and test packaged plugin
-        run: sh tools/smoke-test-release.sh release/basicrum.zip
+        run: sh tools/smoke-test-release.sh release/basicrum-real-user-monitoring.zip
 
       - name: Create GitHub release and upload assets
         uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
@@ -54,5 +54,5 @@ jobs:
           generate_release_notes: true
           fail_on_unmatched_files: true
           files: |
-            release/basicrum.zip
-            release/basicrum.zip.sha256
+            release/basicrum-real-user-monitoring.zip
+            release/basicrum-real-user-monitoring.zip.sha256

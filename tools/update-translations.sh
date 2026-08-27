@@ -7,8 +7,8 @@ languages_dir="${plugin_dir}/languages"
 
 wp i18n make-pot \
 	"${plugin_dir}" \
-	"${languages_dir}/basicrum.pot" \
-	--domain=basicrum \
+	"${languages_dir}/basicrum-real-user-monitoring.pot" \
+	--domain=basicrum-real-user-monitoring \
 	--exclude=tests,vendor \
 	--headers='{"POT-Creation-Date":""}' \
 	--allow-root
