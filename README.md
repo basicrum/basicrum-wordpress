@@ -1,6 +1,14 @@
 # Basicrum WordPress Plugin
 
+![Basicrum](wordpress-org-assets/banner-1544x500.png)
+
 Basicrum is a privacy-first Real User Monitoring integration for WordPress. It loads the bundled Boomerang library, tags WordPress and WooCommerce page types, and sends performance beacons to a configured hosted or self-hosted Basicrum collector.
+
+## Plugin preview
+
+| Monitoring and privacy settings | Automatic consent tool connection |
+| --- | --- |
+| [![Basicrum monitoring and privacy settings](wordpress-org-assets/screenshot-1.png)](wordpress-org-assets/screenshot-1.png) | [![Basicrum automatic consent tool connection](wordpress-org-assets/screenshot-2.png)](wordpress-org-assets/screenshot-2.png) |
 
 The plugin source lives in [`plugins/basicrum/`](plugins/basicrum/). Release tooling packages it under the assigned WordPress.org directory slug `basicrum-real-user-monitoring`; do not zip the source directory directly.
 
