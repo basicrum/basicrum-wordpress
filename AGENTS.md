@@ -78,8 +78,9 @@ in the matching skill.
   WooCommerce version and checksum synchronized in `tools/setup-woocommerce-e2e.sh`.
   The setup disables WooCommerce Coming soon mode so anonymous storefront tests
   can see the seeded product.
-  Review and update each Docker image tag and digest together in
-  `docker/woocommerce-e2e.yml`.
+  Keep `@playwright/test`, its locked packages, and the Playwright Docker image
+  tags synchronized. Review and update each Docker image tag and digest together
+  in `docker-compose.yml` and `docker/woocommerce-e2e.yml`.
 - Pin third-party GitHub Actions to full 40-character commit SHAs. Keep the
   reviewed release tag in the adjacent comment and update pins through reviewed
   Dependabot pull requests.
