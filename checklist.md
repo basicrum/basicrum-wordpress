@@ -167,6 +167,8 @@ Acceptance criteria:
 - [x] Add a WordPress.org slug and text-domain consistency check covering the
   plugin header, source literals, WPCS configuration, POT filename, and release
   package identity.
+- [x] Add a Playwright consistency check covering npm metadata and the pinned
+  Docker images used by local JavaScript and WooCommerce browser tests.
 - [x] Run all convention checks in pull requests and pushes to the main branch.
 - [x] Document the checks in `AGENTS.md` and the contributor documentation.
 
