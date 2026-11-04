@@ -14,7 +14,9 @@ Privacy-first Real User Monitoring with consent-controlled loading, page types, 
 
 Basicrum connects WordPress to a hosted or self-hosted Basicrum collector. It uses the bundled open source Boomerang library to measure how real visitors experience your site.
 
-**Basicrum is currently in private beta.** [Contact Basicrum](https://www.basicrum.com/contact/) to request beta access and receive the Beacon URL and Brum Site ID required to configure the plugin.
+**Join the free public beta of hosted Basicrum.** [Sign up for the hosted service](https://www.basicrum.com/signup) to get started with Real User Monitoring on your site.
+
+**Prefer to self-host?** [Run the Basicrum single-server community edition](https://github.com/basicrum/basicrum-single-instance-community) on your own server. Whichever option you choose, enter its Beacon URL and Brum Site ID in the plugin.
 
 Basicrum supports two monitoring modes:
 
@@ -39,7 +41,7 @@ Visit [basicrum.com](https://www.basicrum.com/) for more information about the B
 1. Install and activate Basicrum.
 2. Open **Basicrum** in the WordPress admin sidebar.
 3. Check **Enable Basicrum** to unlock its settings.
-4. Enter the Beacon URL and Brum Site ID provided with your beta access.
+4. Enter your collector's Beacon URL and matching Brum Site ID.
 5. Review the Visitor Consent and Consent Tool Connection settings.
 6. Save Changes.
 
@@ -54,7 +56,7 @@ Visit [basicrum.com](https://www.basicrum.com/) for more information about the B
 
 = What do I need to use Basicrum? =
 
-You need a Basicrum collector endpoint and its matching Brum Site ID. During the private beta, [contact Basicrum](https://www.basicrum.com/contact/) to request access and receive both values.
+You need a Basicrum collector endpoint and its matching Brum Site ID. [Join the free hosted public beta](https://www.basicrum.com/signup) or [self-host the single-server community edition](https://github.com/basicrum/basicrum-single-instance-community).
 
 = Does Basicrum make my site compliant with privacy laws? =
 
@@ -100,7 +102,7 @@ Beacons go only to the configured endpoint. The plugin does not contact basicrum
 
 The collector may be hosted or self-hosted. Its operator determines retention, access, deletion, hosting, and transfer arrangements, and publishes the terms and privacy notice that apply. Review them before enabling monitoring.
 
-For the Basicrum hosted option, see the [Basicrum platform](https://www.basicrum.com/) and the [Basicrum Privacy Notice](https://www.basicrum.com/privacy/), which covers the basicrum.com website, contact messages, and beta access requests. Ask [Basicrum](https://www.basicrum.com/contact/) for the hosted collector's service terms and privacy notice before you point the plugin at a hosted collector.
+For the Basicrum hosted public beta, see the [Basicrum platform](https://www.basicrum.com/), [Public Beta Terms](https://www.basicrum.com/beta-terms), and [Public Beta Privacy Notice](https://www.basicrum.com/beta-privacy) before you point the plugin at the hosted collector.
 
 == Third-party software ==
 
